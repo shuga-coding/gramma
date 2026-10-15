@@ -176,7 +176,7 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .master > .master-photo + * { padding-top: calc(clamp(76px, 11vw, 168px) * 0.34 + 10px); }   /* место под имя, которое заходит под фото */
 .master-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; color: var(--ash); font-size: 15px; }
 .master-meta strong { color: var(--skin); font-weight: 600; }
-.master-meta .btn { padding: 11px 20px; font-size: 14px; }
+.master-actions { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
 .master .btn { justify-self: start; }
 .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .thumbs button { padding: 0; border: 0; background: var(--wall); cursor: zoom-in; }
@@ -436,14 +436,17 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
           <ul class="tags">
             <li>реализм</li><li>графика</li><li>лайнворк</li><li>микрореализм</li>
           </ul>
-          <div class="master-meta"><span><strong>Анастасия</strong>, опыт больше 5 лет</span><a class="btn solid" href="https://vk.ru/naya.nova" target="_blank" rel="noopener" aria-label="Написать Нае ВКонтакте">Написать</a></div>
+          <div class="master-meta"><span><strong>Анастасия</strong>, опыт больше 5 лет</span></div>
           <div class="thumbs">
             <button type="button" data-open="naya-03"><img src="img/naya-03-s.webp" alt="Волк, графика на рёбрах" loading="lazy"></button>
             <button type="button" data-open="naya-20"><img src="img/naya-20-s.webp" alt="Котёнок, реализм на бедре" loading="lazy"></button>
             <button type="button" data-open="naya-17"><img src="img/naya-17-s.webp" alt="Медведь, реализм на предплечье" loading="lazy"></button>
           </div>
           <div class="mgal" id="mgal-naya" inert><div><div class="thumbs"></div></div></div>
-          <button class="btn mtoggle" type="button" data-master="naya" aria-expanded="false" aria-controls="mgal-naya"><svg class="ic plus" aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl">Все работы Наи</span></button>
+          <div class="master-actions">
+            <button class="btn mtoggle" type="button" data-master="naya" aria-expanded="false" aria-controls="mgal-naya"><svg class="ic plus" aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl">Все работы Наи</span></button>
+            <a class="btn solid" href="https://vk.ru/naya.nova" target="_blank" rel="noopener" aria-label="Написать Нае ВКонтакте">Написать</a>
+          </div>
         </article>
         <article class="master" data-list="shuga">
           <div class="master-photo">
@@ -453,14 +456,17 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
           <ul class="tags">
             <li>чёрно-белый реализм</li><li>перекрытия</li><li>леттеринг</li>
           </ul>
-          <div class="master-meta"><span><strong>Егор</strong>, опыт больше 5 лет</span><a class="btn solid" href="https://vk.ru/shugacalligraphy" target="_blank" rel="noopener" aria-label="Написать Шуге ВКонтакте">Написать</a></div>
+          <div class="master-meta"><span><strong>Егор</strong>, опыт больше 5 лет</span></div>
           <div class="thumbs">
             <button type="button" data-open="shuga-10"><img src="img/shuga-10-s.webp" alt="Рукав: портреты и орнамент" loading="lazy"></button>
             <button type="button" data-open="shuga-11"><img src="img/shuga-11-s.webp" alt="Неотрайбл с красным на руке и кисти" loading="lazy"></button>
             <button type="button" data-open="shuga-03"><img src="img/shuga-03-s.webp" alt="Иисус в терновом венце на предплечье" loading="lazy"></button>
           </div>
           <div class="mgal" id="mgal-shuga" inert><div><div class="thumbs"></div></div></div>
-          <button class="btn mtoggle" type="button" data-master="shuga" aria-expanded="false" aria-controls="mgal-shuga"><svg class="ic plus" aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl">Все работы Шуги</span></button>
+          <div class="master-actions">
+            <button class="btn mtoggle" type="button" data-master="shuga" aria-expanded="false" aria-controls="mgal-shuga"><svg class="ic plus" aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl">Все работы Шуги</span></button>
+            <a class="btn solid" href="https://vk.ru/shugacalligraphy" target="_blank" rel="noopener" aria-label="Написать Шуге ВКонтакте">Написать</a>
+          </div>
         </article>
       </div>
     </div>
