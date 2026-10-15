@@ -246,8 +246,22 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .reviews-widget:empty { display: none; }
 .reviews-widget { width: 100%; }
 .reviews-widget iframe { width: 100%; border: 0; }
-.steps .note { color: var(--skin); font-size: 14px; line-height: 1.45; padding-top: 10px; border-top: 1px dashed var(--graphite); opacity: .85; }
-@media (max-width: 520px) { .steps .note { grid-column: 2; } }
+/* Вопросы: заголовок слева, ответы справа */
+.faq-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px 64px; align-items: start; }
+@media (max-width: 860px) { .faq-wrap { grid-template-columns: 1fr; } }
+.faq-wrap h2 { position: sticky; top: 90px; }
+.faq { border-top: 1px solid var(--graphite); }
+.faq details { border-bottom: 1px solid var(--graphite); }
+.faq summary {
+  list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px;
+  padding-block: 20px; font: 600 clamp(17px, 1.6vw, 20px)/1.3 var(--body); color: var(--skin);
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font: 400 26px/1 var(--body); color: var(--ash); transition: transform .3s, color .2s; flex: none; }
+.faq details[open] summary::after { transform: rotate(45deg); color: var(--wine-hi); }
+.faq summary:hover::after { color: var(--skin); }
+.faq .ans { color: var(--ash); padding-bottom: 22px; max-width: 40em; }
+.faq .ans b { color: var(--skin); font-weight: 600; }
 
 .price { display: inline-flex; align-items: baseline; gap: 12px; margin-top: 18px; color: var(--ash); }
 .price b { font: 900 clamp(28px, 3vw, 40px)/1 var(--display); color: var(--skin); letter-spacing: -0.02em; }
@@ -347,6 +361,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
       <a href="#works" data-gal>Галерея</a>
       <a href="#masters">Мастера</a>
       <a href="#studio">Студия</a>
+      <a href="#faq">Вопросы</a>
       <a href="#process">Как записаться</a>
     </nav>
     <a class="btn solid" href="#process">Записаться</a>
@@ -476,6 +491,35 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
     </div>
   </section>
 
+  <section id="faq" style="padding-bottom:0">
+    <div class="wrap faq-wrap">
+      <h2 class="mid">вопросы</h2>
+      <div class="faq">
+        <details>
+          <summary>Сколько стоит татуировка?</summary>
+          <p class="ans">От <b>2&nbsp;000&nbsp;₽</b>.</p>
+        </details>
+        <details>
+          <summary>Больно ли это?</summary>
+          <p class="ans">Татуировка не очень приятный процесс, но сеансы на обычных, не экстремальных местах проходят комфортно.</p>
+        </details>
+        <details>
+          <summary>С какого возраста можно?</summary>
+          <p class="ans">С 18 лет и старше. Лучше подумать подольше, чтобы быть благодарным себе в будущем.</p>
+        </details>
+        <details>
+          <summary>Сколько заживает татуировка?</summary>
+          <p class="ans">По-разному, это зависит от объёма татуировки. В среднем около 3 дней непосредственного ухода и около недели дополнительного увлажнения кожи.</p>
+        </details>
+        <details>
+          <summary>Как ухаживать за татуировкой?</summary>
+          <!-- TODO: когда будет готова страница с памяткой, заменить текст ниже ссылкой на неё -->
+          <p class="ans">Всё подробно описано в нашей памятке по уходу. Совсем скоро она появится на сайте.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <section id="process" class="booking">
     <div class="wrap">
       <div class="sec-head">
@@ -486,10 +530,10 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
         </div>
       </div>
       <ol class="steps">
-        <li><span class="n" aria-hidden="true">1</span><h3>Сообщение</h3><p>Расскажите идею, место на теле и примерный размер. Если есть референсы, присылайте.</p><p class="note">Работаем с 18 лет. Лучше подумать подольше, чтобы быть благодарным себе в будущем.</p></li>
+        <li><span class="n" aria-hidden="true">1</span><h3>Сообщение</h3><p>Расскажите идею, место на теле и примерный размер. Если есть референсы, присылайте.</p></li>
         <li><span class="n" aria-hidden="true">2</span><h3>Эскиз</h3><p>Мастер рисует эскиз под вашу идею. Правим его вместе, пока он вам не понравится.</p></li>
-        <li><span class="n" aria-hidden="true">3</span><h3>Сеанс</h3><p>Переводим эскиз на кожу, проверяем размещение у зеркала и только потом начинаем.</p><p class="note">Процесс не очень приятный, но на обычных, не экстремальных местах сеанс проходит комфортно.</p></li>
-        <li><span class="n" aria-hidden="true">4</span><h3>Заживление</h3><p>Зависит от объёма татуировки. В среднем около 3 дней непосредственного ухода и около недели дополнительного увлажнения кожи.</p><!-- TODO: когда будет готова памятка по уходу, сделать текст ниже ссылкой на неё --><p class="note">Как ухаживать, подробно расписано в нашей памятке. Скоро она появится на сайте.</p></li>
+        <li><span class="n" aria-hidden="true">3</span><h3>Сеанс</h3><p>Переводим эскиз на кожу, проверяем размещение у зеркала и только потом начинаем.</p></li>
+        <li><span class="n" aria-hidden="true">4</span><h3>Заживление</h3><p>Ухаживаете за татуировкой по нашей памятке. Если появятся вопросы, мы на связи.</p></li>
       </ol>
 
       <div class="write">
