@@ -160,9 +160,6 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .mtoggle { gap: 12px; }
 .mtoggle .plus { display: inline-block; font: 400 20px/1 var(--body); transition: transform .3s; }
 .mtoggle[aria-expanded="true"] .plus { transform: rotate(45deg); }
-.mtoggle .cnt { color: var(--ash); font-weight: 500; }
-.mtoggle:hover .cnt { color: inherit; }
-.mtoggle[aria-expanded="true"] .cnt { display: none; }
 .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .thumbs button { padding: 0; border: 0; background: var(--wall); cursor: zoom-in; }
 .thumbs img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; transition: opacity .2s; }
@@ -176,8 +173,6 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .gal-head .btn { gap: 12px; }
 .gal-head .btn .plus { display: inline-block; font: 400 20px/1 var(--body); transition: transform .3s; }
 .gal-head .btn[aria-expanded="true"] .plus { transform: rotate(45deg); }
-.gal-count { color: var(--ash); font-weight: 500; }
-.gal-head .btn:hover .gal-count { color: inherit; }
 .teaser { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; margin-top: clamp(24px, 3vw, 36px); }
 .teaser button { padding: 0; border: 0; background: var(--wall); cursor: zoom-in; position: relative; }
 .teaser img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; transition: opacity .2s; }
@@ -201,7 +196,6 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 }
 .filters button:hover { color: var(--skin); border-color: var(--ash); }
 .filters button[aria-pressed="true"] { background: var(--skin); color: var(--ink); border-color: var(--skin); }
-.filters sup { font-size: 11px; margin-left: 4px; font-variant-numeric: tabular-nums; }
 .grid { columns: 4 260px; column-gap: 10px; }
 .grid button {
   display: block; width: 100%; margin: 0 0 10px; padding: 0; border: 0;
@@ -383,7 +377,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
             <button type="button" data-open="naya-17"><img src="img/naya-17-s.webp" alt="Медведь, реализм на предплечье" loading="lazy"></button>
           </div>
           <div class="mgal" id="mgal-naya" inert><div><div class="thumbs"></div></div></div>
-          <button class="btn mtoggle" type="button" data-master="naya" aria-expanded="false" aria-controls="mgal-naya"><span class="plus" aria-hidden="true">+</span><span class="lbl">Все работы Наи</span><span class="cnt"></span></button>
+          <button class="btn mtoggle" type="button" data-master="naya" aria-expanded="false" aria-controls="mgal-naya"><span class="plus" aria-hidden="true">+</span><span class="lbl">Все работы Наи</span></button>
         </article>
         <article class="master" data-list="shuga">
           <div class="master-photo">
@@ -400,7 +394,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
             <button type="button" data-open="shuga-23"><img src="img/shuga-23-s.webp" alt="Телевизор на птичьих лапах, реализм с красным" loading="lazy"></button>
           </div>
           <div class="mgal" id="mgal-shuga" inert><div><div class="thumbs"></div></div></div>
-          <button class="btn mtoggle" type="button" data-master="shuga" aria-expanded="false" aria-controls="mgal-shuga"><span class="plus" aria-hidden="true">+</span><span class="lbl">Все работы Шуги</span><span class="cnt"></span></button>
+          <button class="btn mtoggle" type="button" data-master="shuga" aria-expanded="false" aria-controls="mgal-shuga"><span class="plus" aria-hidden="true">+</span><span class="lbl">Все работы Шуги</span></button>
         </article>
       </div>
     </div>
@@ -411,7 +405,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
       <div class="gal-head">
         <h2 class="mid">галерея работ</h2>
         <button class="btn" type="button" id="gal-toggle" aria-expanded="false" aria-controls="gal">
-          <span class="plus" aria-hidden="true">+</span><span id="gal-label">Открыть галерею</span><span class="gal-count" id="gal-count"></span>
+          <span class="plus" aria-hidden="true">+</span><span id="gal-label">Открыть галерею</span>
         </button>
       </div>
       <div class="teaser" id="teaser"></div>
@@ -419,9 +413,9 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
         <div class="gal-inner">
           <div class="gal-pad">
             <div class="filters" role="group" aria-label="Чьи работы показать">
-              <button type="button" data-f="all" aria-pressed="true">Все<sup id="c-all"></sup></button>
-              <button type="button" data-f="naya" aria-pressed="false">Ная<sup id="c-naya"></sup></button>
-              <button type="button" data-f="shuga" aria-pressed="false">Шуга<sup id="c-shuga"></sup></button>
+              <button type="button" data-f="all" aria-pressed="true">Все</button>
+              <button type="button" data-f="naya" aria-pressed="false">Ная</button>
+              <button type="button" data-f="shuga" aria-pressed="false">Шуга</button>
             </div>
             <div class="grid" id="grid"></div>
             <button class="btn" type="button" id="gal-close">Свернуть галерею</button>
@@ -531,9 +525,6 @@ for (let i = 0; i < max; i++) {
 }
 const byId = Object.fromEntries(works.map(w => [w.id, w]));
 
-document.getElementById("c-all").textContent = works.length;
-document.getElementById("c-naya").textContent = ALT.naya.length;
-document.getElementById("c-shuga").textContent = ALT.shuga.length;
 
 // ленты
 const reelPick1 = ["shuga-20","naya-17","shuga-05","naya-11","shuga-21","naya-03","shuga-12","naya-20","shuga-06","naya-13","shuga-03"];
@@ -584,11 +575,10 @@ render();
 // раскрытие галереи
 const gal = document.getElementById("gal"), galToggle = document.getElementById("gal-toggle");
 const galLabel = document.getElementById("gal-label");
-document.getElementById("gal-count").textContent = `${works.length} работ`;
 const teaser = document.getElementById("teaser");
 const teaserPick = ["naya-06","shuga-22","naya-09","shuga-04","naya-15","shuga-09","naya-21"];
 teaser.innerHTML = teaserPick.map(id => `<button type="button" data-open="${id}"><img src="img/${id}-s.webp" alt="${byId[id].alt}" loading="lazy" width="240" height="320"></button>`).join("")
-  + `<button type="button" class="more" id="teaser-more"><b>+${works.length - teaserPick.length}</b><span>открыть все работы</span></button>`;
+  + `<button type="button" class="more" id="teaser-more"><b>+</b><span>все работы</span></button>`;
 document.getElementById("teaser-more").addEventListener("click", () => setGallery(true));
 function setGallery(isOpen) {
   teaser.hidden = isOpen;
@@ -610,7 +600,6 @@ document.querySelectorAll(".mtoggle").forEach(btn => {
   const lbl = btn.querySelector(".lbl"), base = lbl.textContent;
   const shown = [...btn.closest(".master").querySelectorAll(".thumbs [data-open]")].map(b => b.dataset.open);
   const rest = ORDER[m].filter(w => !shown.includes(w.id));
-  btn.querySelector(".cnt").textContent = ORDER[m].length;
   btn.addEventListener("click", () => {
     const isOpen = !box.classList.contains("open");
     if (isOpen && !box.dataset.ready) {
