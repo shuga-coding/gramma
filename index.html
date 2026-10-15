@@ -58,8 +58,9 @@ a { color: inherit; }
   padding-left: var(--gutter);
   padding-right: var(--gutter-r);
 }
-h1, h2, h3 { font-family: var(--display); font-weight: 900; text-wrap: balance; margin: 0; letter-spacing: -0.02em; line-height: 0.95; text-transform: lowercase; }
-h2 { font-size: clamp(40px, 7.4vw, 104px); }
+h1, h2, h3 { font-family: var(--display); font-weight: 900; text-wrap: balance; margin: 0; letter-spacing: -0.02em; line-height: 0.95; text-transform: lowercase; overflow-wrap: break-word; }
+h2 { font-size: clamp(32px, 9.5vw, 40px); }   /* Unbounded широкий: «записаться» должно влезать и на 320px */
+@media (min-width: 601px) { h2 { font-size: clamp(40px, 7.4vw, 104px); } }
 h2.mid { font-size: clamp(32px, 4.6vw, 64px); }
 p { margin: 0; }
 .lead { color: var(--ash); max-width: 34em; }
@@ -357,7 +358,8 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 @media (min-width: 861px) { .where { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); } }
 .where h3 { font-size: 18px; color: var(--ash); font-weight: 700; margin-bottom: 14px; letter-spacing: 0; }
 .where .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
-.addr { font: 700 clamp(22px, 2.4vw, 32px)/1.2 var(--display); letter-spacing: -0.01em; }
+.addr { font: 700 clamp(18px, 5.6vw, 22px)/1.2 var(--display); letter-spacing: -0.01em; overflow-wrap: break-word; }
+@media (min-width: 601px) { .addr { font-size: clamp(22px, 2.4vw, 32px); } }
 .addr-note { color: var(--ash); margin-top: 14px; max-width: 40em; }
 .where-reviews { display: grid; gap: 16px; align-content: start; justify-items: start; min-width: 0; }
 .reviews-widget:empty { display: none; }
@@ -619,7 +621,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
       <div class="where" id="contacts">
         <div>
           <h3>Где нас найти</h3>
-          <p class="addr">Владимир, ул.&nbsp;Добросельская,&nbsp;171Б<br>ТЦ «Алмаз», 2&nbsp;этаж, пом.&nbsp;7а</p>
+          <p class="addr">Владимир, ул.&nbsp;Добросельская, 171Б<br>ТЦ «Алмаз», 2&nbsp;этаж, пом.&nbsp;7а</p>
           <p class="addr-note">Вход через ТЦ, второй этаж. Работаем только по записи.</p>
           <div class="actions">
             <a class="btn" href="https://yandex.ru/profile/101850644744" target="_blank" rel="noopener">Яндекс Карты</a>
