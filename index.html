@@ -108,15 +108,12 @@ header.top {
 
 /* Бегущие ленты */
 .reel { overflow: hidden; display: grid; gap: 10px; padding-block: 8px 0; }
-.track { display: flex; gap: 10px; width: max-content; animation: slide 70s linear infinite; }
-.track.rev { animation-direction: reverse; animation-duration: 85s; }
-.reel:hover .track { animation-play-state: paused; }
+.track { display: flex; gap: 10px; width: max-content; will-change: transform; }
 .track button { padding: 0; border: 0; background: var(--wall); cursor: zoom-in; flex: none; }
 .track img { height: clamp(200px, 24vw, 320px); width: auto; aspect-ratio: 3 / 4; object-fit: cover; filter: grayscale(.15); transition: filter .3s; }
 .track button:hover img { filter: none; }
-@keyframes slide { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) {
-  .track { animation: none; }
+  .track { transform: none !important; }
   .reel { overflow-x: auto; }
   .logo-ink { animation: none; }
 }
@@ -141,6 +138,8 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 }
 .master-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: calc(clamp(76px, 11vw, 168px) * 0.34 + 10px); color: var(--ash); font-size: 15px; }
 .master-meta strong { color: var(--skin); font-weight: 600; }
+.master-meta .vk { color: var(--skin); text-decoration: underline; text-decoration-color: var(--wine-hi); text-underline-offset: 4px; overflow-wrap: anywhere; }
+.master-meta .vk:hover { color: var(--wine-hi); }
 .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .thumbs button { padding: 0; border: 0; background: var(--wall); cursor: zoom-in; }
 .thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; transition: opacity .2s; }
@@ -230,22 +229,9 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 /* Контакты */
 .contact { border-top: 1px solid var(--graphite); }
 .contact h2 { font-size: clamp(44px, 9vw, 136px); margin-bottom: clamp(36px, 5vw, 56px); }
-.contact-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(32px, 5vw, 80px); }
-@media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
 .addr { font: 700 clamp(22px, 2.4vw, 32px)/1.2 var(--display); letter-spacing: -0.01em; }
-.addr-note { color: var(--ash); margin-top: 14px; }
+.addr-note { color: var(--ash); margin-top: 14px; max-width: 40em; }
 .contact .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
-.mails { display: grid; gap: 0; align-content: start; }
-.mail { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--graphite); }
-.mail:first-child { border-top: 1px solid var(--graphite); }
-.mail span { color: var(--ash); font-size: 14px; grid-column: 1; }
-.mail b { font-weight: 500; font-size: 18px; user-select: all; overflow-wrap: anywhere; grid-column: 1; }
-.mail button {
-  grid-column: 2; grid-row: 1 / span 2;
-  font: 500 14px/1 var(--body); color: var(--skin); background: none;
-  border: 1px solid var(--graphite); border-radius: 999px; padding: 9px 14px; cursor: pointer;
-}
-.mail button:hover { border-color: var(--skin); }
 
 footer { border-top: 1px solid var(--graphite); color: var(--ash); font-size: 13px; }
 footer .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; padding-block: 16px; }
@@ -323,7 +309,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
             <img src="img/master-naya.webp" alt="Ная, мастер студии «Грамма»" width="1000" height="1500" loading="lazy">
             <div class="master-name" aria-hidden="true">ная</div>
           </div>
-          <div class="master-meta"><span><strong>Анастасия</strong>, опыт больше 5 лет</span><span>naya@gramma.tattoo</span></div>
+          <div class="master-meta"><span><strong>Анастасия</strong>, опыт больше 5 лет</span><a class="vk" href="https://vk.ru/naya.nova" target="_blank" rel="noopener">vk.ru/naya.nova</a></div>
           <ul class="tags">
             <li>реализм</li><li>графика</li><li>портреты</li><li>животные</li><li>цветы</li><li>японские мотивы</li>
           </ul>
@@ -336,10 +322,10 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
         </article>
         <article class="master">
           <div class="master-photo">
-            <img src="img/master-shuga.webp" alt="Егор Шуга, мастер студии «Грамма», в студии" width="1086" height="1448" loading="lazy">
+            <img src="img/master-shuga.webp" alt="Егор Шуга за работой в студии «Грамма»" width="904" height="1204" loading="lazy">
             <div class="master-name" aria-hidden="true">шуга</div>
           </div>
-          <div class="master-meta"><span><strong>Егор</strong>, опыт больше 5 лет</span><span>shuga@gramma.tattoo</span></div>
+          <div class="master-meta"><span><strong>Егор</strong>, опыт больше 5 лет</span><a class="vk" href="https://vk.ru/shugacalligraphy" target="_blank" rel="noopener">vk.ru/shugacalligraphy</a></div>
           <ul class="tags">
             <li>чёрно-серый реализм</li><li>портреты</li><li>религиозные сюжеты</li><li>скандинавские мотивы</li><li>блэкворк</li><li>неотрайбл</li>
           </ul>
@@ -417,8 +403,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
   <section id="contacts" class="contact">
     <div class="wrap">
       <h2>приходите в&nbsp;гости</h2>
-      <div class="contact-grid">
-        <div>
+      <div>
           <p class="addr">Владимир, ул. Добросельская, 171Б<br>ТЦ «Алмаз», 2 этаж, пом. 7а</p>
           <p class="addr-note">Вход через ТЦ, второй этаж. Часы работы договорные: время консультации и сеанса согласуем с вами заранее.</p>
           <div class="actions">
@@ -427,12 +412,6 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
             <a class="btn" href="https://yandex.ru/profile/101850644744" target="_blank" rel="noopener">Яндекс Карты</a>
             <a class="btn" href="https://www.avito.ru/brands/a570808724131079002485e05216e51e" target="_blank" rel="noopener">Авито</a>
           </div>
-        </div>
-        <div class="mails">
-          <div class="mail"><span>Общая почта</span><b>info@gramma.tattoo</b><button type="button" data-copy="info@gramma.tattoo">Копировать</button></div>
-          <div class="mail"><span>Ная</span><b>naya@gramma.tattoo</b><button type="button" data-copy="naya@gramma.tattoo">Копировать</button></div>
-          <div class="mail"><span>Шуга</span><b>shuga@gramma.tattoo</b><button type="button" data-copy="shuga@gramma.tattoo">Копировать</button></div>
-        </div>
       </div>
     </div>
   </section>
@@ -482,11 +461,32 @@ document.getElementById("c-shuga").textContent = ALT.shuga.length;
 const reelPick1 = ["shuga-20","naya-17","shuga-05","naya-11","shuga-21","naya-03","shuga-12","naya-20","shuga-06","naya-13","shuga-03"];
 const reelPick2 = ["naya-19","shuga-23","naya-02","shuga-18","naya-16","shuga-22","naya-22","shuga-14","naya-12","shuga-17"];
 function fillReel(el, ids) {
-  const html = ids.map(id => `<button type="button" data-open="${id}" tabindex="-1"><img src="img/${id}-s.webp" alt="${byId[id].alt}" loading="lazy" width="240" height="320"></button>`).join("");
-  el.innerHTML = html + html.replaceAll('alt="', 'aria-hidden="true" alt="');
+  el.innerHTML = ids.map(id => `<button type="button" data-open="${id}"><img src="img/${id}-s.webp" alt="${byId[id].alt}" loading="lazy" width="240" height="320"></button>`).join("");
 }
 fillReel(document.getElementById("reel1"), reelPick1);
 fillReel(document.getElementById("reel2"), reelPick2);
+
+// ленты едут вслед за прокруткой: верхняя влево, нижняя вправо
+const reel = document.querySelector(".reel");
+const tracks = [...reel.querySelectorAll(".track")];
+const calm = matchMedia("(prefers-reduced-motion: reduce)");
+let ticking = false;
+function moveReels() {
+  ticking = false;
+  if (calm.matches) return;
+  const box = reel.getBoundingClientRect();
+  const end = box.top + scrollY + box.height;          // прокрутка, при которой ленты уходят за верх экрана
+  const p = Math.min(1, Math.max(0, scrollY / end));
+  tracks.forEach((t, i) => {
+    const travel = Math.min(t.scrollWidth - reel.clientWidth, end);
+    const x = i % 2 ? -travel * (1 - p) : -travel * p;
+    t.style.transform = `translate3d(${x}px, 0, 0)`;
+  });
+}
+function requestMove() { if (!ticking) { ticking = true; requestAnimationFrame(moveReels); } }
+addEventListener("scroll", requestMove, { passive: true });
+addEventListener("resize", requestMove);
+moveReels();
 
 // сетка
 const grid = document.getElementById("grid");
@@ -557,17 +557,6 @@ lb.addEventListener("touchend", e => {
   sx = null;
 });
 
-// копирование почты
-document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", async () => {
-  const text = b.dataset.copy;
-  try { await navigator.clipboard.writeText(text); b.textContent = "Скопировано"; }
-  catch (e) {
-    const r = document.createRange(); r.selectNodeContents(b.previousElementSibling);
-    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
-    b.textContent = "Выделено";
-  }
-  setTimeout(() => { b.textContent = "Копировать"; }, 1800);
-}));
 </script>
 </body>
 </html>
