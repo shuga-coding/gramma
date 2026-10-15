@@ -182,12 +182,15 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 /* лента работ в карточке: свайп на телефоне, колесо и стрелки на компьютере; справа выглядывает следующая работа */
 .car-wrap { position: relative; min-width: 0; }
 .thumbs.car {
-  grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: calc((100% - 16px) / 3.25);
+  grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: calc((100% - 8px) / 1.35);
   overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-behavior: smooth;
   scrollbar-width: none; -webkit-overflow-scrolling: touch;
 }
 .thumbs.car::-webkit-scrollbar { display: none; }
 .thumbs.car > button { scroll-snap-align: start; }
+.thumbs.car img { aspect-ratio: 4 / 5; }
+@media (min-width: 601px) { .thumbs.car { grid-auto-columns: calc((100% - 16px) / 2.25); } .thumbs.car img { aspect-ratio: 1; } }
+@media (min-width: 901px) { .thumbs.car { grid-auto-columns: calc((100% - 16px) / 3.25); } }
 @media (prefers-reduced-motion: reduce) { .thumbs.car { scroll-behavior: auto; } }
 .car-btn { display: none; }
 @media (hover: hover) and (pointer: fine) {
@@ -211,8 +214,16 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .gal-head .btn { gap: 12px; }
 .gal-head .btn .plus { font-size: 18px; transition: transform .3s; }
 .gal-head .btn[aria-expanded="true"] .plus { transform: rotate(45deg); }
-.teaser { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: clamp(24px, 3vw, 36px); }
-@media (min-width: 761px) { .teaser { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
+.teaser {
+  display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 8px) / 1.35); gap: 8px; margin-top: clamp(24px, 3vw, 36px);
+  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.teaser::-webkit-scrollbar { display: none; }
+.teaser > button { scroll-snap-align: start; }
+@media (min-width: 601px) { .teaser { grid-auto-columns: calc((100% - 16px) / 2.5); } }
+@media (min-width: 761px) {
+  .teaser { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: repeat(8, minmax(0, 1fr)); overflow: visible; scroll-snap-type: none; }
+}
 .teaser button { padding: 0; border: 0; background: var(--wall); cursor: zoom-in; position: relative; }
 .teaser img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; transition: opacity .2s; }
 .teaser button:hover img { opacity: .8; }
