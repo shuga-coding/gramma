@@ -266,18 +266,21 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .studio { background: var(--wall); }
 .studio-grid {
   display: grid; gap: 10px;
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 170px;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 80px;
 }
 .studio-grid figure { margin: 0; overflow: hidden; background: var(--ink); }
 .studio-grid img { width: 100%; height: 100%; object-fit: cover; }
-.studio-grid .a { grid-column: span 2; grid-row: span 2; }
-.studio-grid .b, .studio-grid .c, .studio-grid .d, .studio-grid .e { grid-column: span 1; grid-row: span 2; }
+/* телефон: общий вид, три вертикальных кадра в ряд, панорама; с 761px: общий вид и диван, ниже два вертикальных и панорама */
+.studio-grid .a { grid-column: span 6; grid-row: span 3; }
+.studio-grid .b, .studio-grid .c, .studio-grid .d { grid-column: span 2; grid-row: span 2; }
+.studio-grid .e { grid-column: span 6; grid-row: span 2; }
 @media (min-width: 761px) {
-  .studio-grid { grid-template-columns: repeat(6, 1fr); grid-auto-rows: clamp(120px, 15vw, 210px); }
-  .studio-grid .a { grid-column: span 4; grid-row: span 3; }
-  .studio-grid .b { grid-column: span 2; grid-row: span 3; }
-  .studio-grid .c, .studio-grid .d, .studio-grid .e { grid-column: span 2; grid-row: span 2; }
+  .studio-grid { grid-template-columns: repeat(12, 1fr); grid-auto-rows: clamp(120px, 15vw, 210px); }
+  .studio-grid .a { grid-column: span 8; grid-row: span 3; }
+  .studio-grid .b { grid-column: span 4; grid-row: span 3; }
+  .studio-grid .c, .studio-grid .d { grid-column: span 3; grid-row: span 2; }
+  .studio-grid .e { grid-column: span 6; grid-row: span 2; }
 }
 .studio-points { list-style: none; padding: 0; margin: clamp(36px, 5vw, 56px) 0 0; display: grid; grid-template-columns: 1fr; gap: 0; }
 .studio-points li { font: 700 clamp(18px, 1.8vw, 22px)/1.2 var(--display); letter-spacing: -0.01em; text-transform: lowercase; padding-block: 14px; border-top: 1px solid var(--graphite); }
@@ -540,7 +543,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
         <figure class="b"><img src="img/room-04.webp" alt="Зона отдыха с красным диваном и светящимся логотипом" loading="lazy"></figure>
         <figure class="c"><img src="img/room-02.webp" alt="Рабочее место мастера на фоне росписи на стене" loading="lazy"></figure>
         <figure class="d"><img src="img/room-08.webp" alt="Кушетка у чёрной стены с кольцевой лампой" loading="lazy"></figure>
-        <figure class="e"><img src="img/room-03.webp" alt="Зеркало в полный рост" loading="lazy"></figure>
+        <figure class="e"><img src="img/room-05.webp" alt="Рабочий зал студии: места мастеров и зона ожидания" loading="lazy"></figure>
       </div>
       <ul class="studio-points">
         <li>Комфортные места для проведения сеансов;</li>
