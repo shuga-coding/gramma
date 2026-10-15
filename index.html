@@ -288,16 +288,16 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 }
 
 /* Контакты */
-/* Тигр со стены студии на фоне блока записи */
-.booking { position: relative; overflow: hidden; isolation: isolate; }
-.booking > .wrap { position: relative; }
+/* Тигр со стены студии на фоне первого экрана */
+.hero-band { position: relative; overflow: hidden; isolation: isolate; }
+.hero-band > .hero { position: relative; }
 .tiger {
   position: absolute; z-index: -1; pointer-events: none;
-  top: clamp(40px, 6vw, 90px); right: -14%;
-  width: min(1200px, 92vw); height: auto;
-  opacity: .07;
+  top: 50%; right: -10%; translate: 0 -50%;
+  width: min(1150px, 78vw); height: auto;
+  opacity: .1;
 }
-@media (max-width: 700px) { .tiger { top: 60px; right: -55%; width: 170vw; opacity: .08; } }
+@media (max-width: 860px) { .tiger { top: 4%; right: -45%; translate: none; width: 150vw; opacity: .09; } }
 
 /* Кнопки «написать мастеру» */
 .write { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: clamp(40px, 5vw, 64px); }
@@ -368,6 +368,8 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
 </header>
 
 <main id="top">
+  <div class="hero-band">
+  <img class="tiger" src="img/tiger.svg" alt="" aria-hidden="true" width="1667" height="1144">
   <div class="hero wrap">
     <div class="hero-grid">
       <img class="logo-ink" src="img/logo_big.svg" alt="Грамма, тату-студия" width="1102" height="697">
@@ -380,6 +382,8 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
         </div>
       </div>
     </div>
+  </div>
+
   </div>
 
   <div class="reel" aria-label="Лента работ">
@@ -532,7 +536,6 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
   </section>
 
   <section id="process" class="booking">
-    <img class="tiger" src="img/tiger.svg" alt="" aria-hidden="true" width="1667" height="1144" loading="lazy">
     <div class="wrap">
       <div class="sec-head">
         <h2>как записаться</h2>
