@@ -173,7 +173,8 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
   mix-blend-mode: difference;
   pointer-events: none;
 }
-.master-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; padding-top: calc(clamp(76px, 11vw, 168px) * 0.34 + 10px); color: var(--ash); font-size: 15px; }
+.master > .master-photo + * { padding-top: calc(clamp(76px, 11vw, 168px) * 0.34 + 10px); }   /* место под имя, которое заходит под фото */
+.master-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; color: var(--ash); font-size: 15px; }
 .master-meta strong { color: var(--skin); font-weight: 600; }
 .master-meta .btn { padding: 11px 20px; font-size: 14px; }
 .master .btn { justify-self: start; }
@@ -432,10 +433,10 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
             <img src="img/master-naya.webp" alt="Ная, мастер студии «Грамма»" width="1000" height="1500" loading="lazy">
             <div class="master-name" aria-hidden="true">ная</div>
           </div>
-          <div class="master-meta"><span><strong>Анастасия</strong>, опыт больше 5 лет</span><a class="btn solid" href="https://vk.ru/naya.nova" target="_blank" rel="noopener" aria-label="Написать Нае ВКонтакте">Написать</a></div>
           <ul class="tags">
             <li>реализм</li><li>графика</li><li>лайнворк</li><li>микрореализм</li>
           </ul>
+          <div class="master-meta"><span><strong>Анастасия</strong>, опыт больше 5 лет</span><a class="btn solid" href="https://vk.ru/naya.nova" target="_blank" rel="noopener" aria-label="Написать Нае ВКонтакте">Написать</a></div>
           <div class="thumbs">
             <button type="button" data-open="naya-03"><img src="img/naya-03-s.webp" alt="Волк, графика на рёбрах" loading="lazy"></button>
             <button type="button" data-open="naya-20"><img src="img/naya-20-s.webp" alt="Котёнок, реализм на бедре" loading="lazy"></button>
@@ -449,10 +450,10 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
             <img src="img/master-shuga.webp" alt="Егор Шуга за работой в студии «Грамма»" width="904" height="1204" loading="lazy">
             <div class="master-name" aria-hidden="true">шуга</div>
           </div>
-          <div class="master-meta"><span><strong>Егор</strong>, опыт больше 5 лет</span><a class="btn solid" href="https://vk.ru/shugacalligraphy" target="_blank" rel="noopener" aria-label="Написать Шуге ВКонтакте">Написать</a></div>
           <ul class="tags">
             <li>чёрно-белый реализм</li><li>перекрытия</li><li>леттеринг</li>
           </ul>
+          <div class="master-meta"><span><strong>Егор</strong>, опыт больше 5 лет</span><a class="btn solid" href="https://vk.ru/shugacalligraphy" target="_blank" rel="noopener" aria-label="Написать Шуге ВКонтакте">Написать</a></div>
           <div class="thumbs">
             <button type="button" data-open="shuga-10"><img src="img/shuga-10-s.webp" alt="Рукав: портреты и орнамент" loading="lazy"></button>
             <button type="button" data-open="shuga-11"><img src="img/shuga-11-s.webp" alt="Неотрайбл с красным на руке и кисти" loading="lazy"></button>
