@@ -189,6 +189,28 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .mgal.open { grid-template-rows: 1fr; margin-top: -14px; }
 .mgal > div { overflow: hidden; min-height: 0; }
 .mgal .thumbs { padding-top: 0; }
+/* лента работ в карточке: свайп на телефоне, колесо и стрелки на компьютере; справа выглядывает следующая работа */
+.car-wrap { position: relative; min-width: 0; }
+.thumbs.car {
+  grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: calc((100% - 16px) / 3.25);
+  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.thumbs.car::-webkit-scrollbar { display: none; }
+.thumbs.car > button { scroll-snap-align: start; }
+@media (prefers-reduced-motion: reduce) { .thumbs.car { scroll-behavior: auto; } }
+.car-btn { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .car-btn {
+    display: grid; place-items: center; position: absolute; top: 50%; transform: translateY(-50%);
+    width: var(--tap); height: var(--tap); border-radius: 50%; font-size: 20px; cursor: pointer;
+    background: var(--ink); color: var(--skin); border: 1px solid var(--edge); transition: border-color .2s, opacity .2s;
+  }
+  .car-btn:hover { border-color: var(--skin); }
+  .car-btn.prev { left: 8px; }
+  .car-btn.next { right: 8px; }
+  .car-btn:disabled { opacity: 0; pointer-events: none; }
+}
 @media (prefers-reduced-motion: reduce) { .mgal { transition: none; } }
 .mtoggle { gap: 12px; }
 .mtoggle .plus { font-size: 18px; transition: transform .3s; }
@@ -437,10 +459,14 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
             <li>реализм</li><li>графика</li><li>лайнворк</li><li>микрореализм</li>
           </ul>
           <div class="master-meta"><span><strong>Анастасия</strong>, опыт больше 5 лет</span></div>
-          <div class="thumbs">
-            <button type="button" data-open="naya-03"><img src="img/naya-03-s.webp" alt="Волк, графика на рёбрах" loading="lazy"></button>
-            <button type="button" data-open="naya-20"><img src="img/naya-20-s.webp" alt="Котёнок, реализм на бедре" loading="lazy"></button>
-            <button type="button" data-open="naya-17"><img src="img/naya-17-s.webp" alt="Медведь, реализм на предплечье" loading="lazy"></button>
+          <div class="car-wrap">
+            <div class="thumbs car" id="car-naya" aria-label="Работы мастера, листаются вбок">
+              <button type="button" data-open="naya-03"><img src="img/naya-03-s.webp" alt="Волк, графика на рёбрах" loading="lazy"></button>
+              <button type="button" data-open="naya-20"><img src="img/naya-20-s.webp" alt="Котёнок, реализм на бедре" loading="lazy"></button>
+              <button type="button" data-open="naya-17"><img src="img/naya-17-s.webp" alt="Медведь, реализм на предплечье" loading="lazy"></button>
+            </div>
+            <button class="car-btn prev" type="button" aria-label="Предыдущие работы" aria-controls="car-naya"><svg class="ic" aria-hidden="true"><use href="#i-left"/></svg></button>
+            <button class="car-btn next" type="button" aria-label="Следующие работы" aria-controls="car-naya"><svg class="ic" aria-hidden="true"><use href="#i-right"/></svg></button>
           </div>
           <div class="mgal" id="mgal-naya" inert><div><div class="thumbs"></div></div></div>
           <div class="master-actions">
@@ -457,10 +483,14 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
             <li>чёрно-белый реализм</li><li>перекрытия</li><li>леттеринг</li>
           </ul>
           <div class="master-meta"><span><strong>Егор</strong>, опыт больше 5 лет</span></div>
-          <div class="thumbs">
-            <button type="button" data-open="shuga-10"><img src="img/shuga-10-s.webp" alt="Рукав: портреты и орнамент" loading="lazy"></button>
-            <button type="button" data-open="shuga-11"><img src="img/shuga-11-s.webp" alt="Неотрайбл с красным на руке и кисти" loading="lazy"></button>
-            <button type="button" data-open="shuga-03"><img src="img/shuga-03-s.webp" alt="Иисус в терновом венце на предплечье" loading="lazy"></button>
+          <div class="car-wrap">
+            <div class="thumbs car" id="car-shuga" aria-label="Работы мастера, листаются вбок">
+              <button type="button" data-open="shuga-10"><img src="img/shuga-10-s.webp" alt="Рукав: портреты и орнамент" loading="lazy"></button>
+              <button type="button" data-open="shuga-11"><img src="img/shuga-11-s.webp" alt="Неотрайбл с красным на руке и кисти" loading="lazy"></button>
+              <button type="button" data-open="shuga-03"><img src="img/shuga-03-s.webp" alt="Иисус в терновом венце на предплечье" loading="lazy"></button>
+            </div>
+            <button class="car-btn prev" type="button" aria-label="Предыдущие работы" aria-controls="car-shuga"><svg class="ic" aria-hidden="true"><use href="#i-left"/></svg></button>
+            <button class="car-btn next" type="button" aria-label="Следующие работы" aria-controls="car-shuga"><svg class="ic" aria-hidden="true"><use href="#i-right"/></svg></button>
           </div>
           <div class="mgal" id="mgal-shuga" inert><div><div class="thumbs"></div></div></div>
           <div class="master-actions">
@@ -833,6 +863,25 @@ lb.addEventListener("touchend", e => {
   sx = null;
 });
 
+// ленты работ в карточках мастеров
+document.querySelectorAll(".thumbs.car").forEach(car => {
+  const m = car.id.replace("car-", "");
+  const shown = [...car.querySelectorAll("[data-open]")].map(b => b.dataset.open);
+  car.append(...ORDER[m].filter(w => !shown.includes(w.id)).map(w => thumb(w, [240, 240])));
+  const wrap = car.closest(".car-wrap");
+  const prev = wrap.querySelector(".prev"), next = wrap.querySelector(".next");
+  let pending = false;
+  function sync() {                                  // сначала чтения, потом записи
+    pending = false;
+    const x = car.scrollLeft, max = car.scrollWidth - car.clientWidth;
+    prev.disabled = x <= 2;
+    next.disabled = x >= max - 2;
+  }
+  car.addEventListener("scroll", () => { if (!pending) { pending = true; requestAnimationFrame(sync); } }, { passive: true });
+  prev.addEventListener("click", () => car.scrollBy({ left: -car.clientWidth, behavior: "smooth" }));
+  next.addEventListener("click", () => car.scrollBy({ left: car.clientWidth, behavior: "smooth" }));
+  sync();
+});
 </script>
 </body>
 </html>
