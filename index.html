@@ -19,6 +19,10 @@
   --skin: #ece6dd;       /* основной текст */
   --wine: #a3161f;       /* красный диван и колонна */
   --wine-hi: #c41f2a;
+  --edge: #6b665f;                       /* обводка кнопок и полей: контраст от 3:1 к ink и wall */
+  --veil: rgba(7, 7, 7, .82);            /* фон закреплённой шапки */
+  --veil-strong: rgba(7, 7, 7, .94);     /* фон окна просмотра */
+  --stroke-soft: rgba(236, 230, 221, .55); /* контур цифр шагов */
   --display: "Unbounded", "Arial Black", system-ui, sans-serif;
   --body: "Golos Text", "Segoe UI", system-ui, sans-serif;
   --gutter: max(16px, env(safe-area-inset-left, 0px));
@@ -27,7 +31,7 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overscroll-behavior-x: none; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0;
@@ -36,7 +40,11 @@ body {
   font: 400 17px/1.6 var(--body);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
+.ic { width: 1em; height: 1em; flex: none; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.btn:active, .write-card:active, .filters button:active { transform: scale(.98); }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--wine-hi); outline-offset: 3px; }
@@ -72,7 +80,7 @@ p { margin: 0; }
 /* Шапка */
 header.top {
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
-  background: color-mix(in srgb, var(--ink) 82%, transparent);
+  background: var(--veil);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--graphite);
@@ -158,7 +166,7 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .mgal .thumbs { padding-top: 0; }
 @media (prefers-reduced-motion: reduce) { .mgal { transition: none; } }
 .mtoggle { gap: 12px; }
-.mtoggle .plus { display: inline-block; font: 400 20px/1 var(--body); transition: transform .3s; }
+.mtoggle .plus { font-size: 18px; transition: transform .3s; }
 .mtoggle[aria-expanded="true"] .plus { transform: rotate(45deg); }
 .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .thumbs button { padding: 0; border: 0; background: var(--wall); cursor: zoom-in; }
@@ -171,30 +179,32 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 /* Галерея работ */
 .gal-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px 48px; }
 .gal-head .btn { gap: 12px; }
-.gal-head .btn .plus { display: inline-block; font: 400 20px/1 var(--body); transition: transform .3s; }
+.gal-head .btn .plus { font-size: 18px; transition: transform .3s; }
 .gal-head .btn[aria-expanded="true"] .plus { transform: rotate(45deg); }
 .teaser { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; margin-top: clamp(24px, 3vw, 36px); }
 .teaser button { padding: 0; border: 0; background: var(--wall); cursor: zoom-in; position: relative; }
 .teaser img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; transition: opacity .2s; }
 .teaser button:hover img { opacity: .8; }
-.teaser .more { cursor: pointer; color: var(--skin); border: 1px solid var(--graphite); background: var(--wall); display: grid; place-content: center; gap: 4px; text-align: center; transition: border-color .2s, background .2s; }
+.teaser .more { cursor: pointer; color: var(--skin); border: 1px solid var(--edge); background: var(--wall); display: grid; place-content: center; gap: 4px; text-align: center; transition: border-color .2s, background .2s; }
 .teaser .more:hover { border-color: var(--wine); background: var(--wine); }
-.teaser .more b { font: 900 clamp(22px, 2.4vw, 34px)/1 var(--display); }
+.teaser .more .ic { font-size: clamp(26px, 2.6vw, 36px); justify-self: center; }
 .teaser .more span { font-size: 13px; color: inherit; opacity: .8; }
 @media (max-width: 760px) { .teaser { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .gal { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .6s cubic-bezier(.2,.7,.2,1); }
 .gal.open { grid-template-rows: 1fr; }
 .gal-inner { overflow: hidden; min-height: 0; }
+.gal:not(.open) .gal-inner, .mgal:not(.open) > div { visibility: hidden; transition: visibility 0s .6s; }
+.gal.open .gal-inner, .mgal.open > div { visibility: visible; }
 .gal-pad { display: grid; gap: 28px; padding-top: clamp(32px, 4vw, 48px); }
 .gal-pad > .btn { justify-self: start; }
 @media (prefers-reduced-motion: reduce) { .gal { transition: none; } }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; }
 .filters button {
   font: 500 15px/1 var(--body); color: var(--ash);
-  background: none; border: 1px solid var(--graphite); border-radius: 999px;
+  background: none; border: 1px solid var(--edge); border-radius: 999px;
   padding: 10px 18px; cursor: pointer; transition: color .2s, border-color .2s, background .2s;
 }
-.filters button:hover { color: var(--skin); border-color: var(--ash); }
+.filters button:hover { color: var(--skin); border-color: var(--skin); }
 .filters button[aria-pressed="true"] { background: var(--skin); color: var(--ink); border-color: var(--skin); }
 .grid { columns: 4 260px; column-gap: 10px; }
 .grid button {
@@ -257,9 +267,9 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
   padding-block: 20px; font: 600 clamp(17px, 1.6vw, 20px)/1.3 var(--body); color: var(--skin);
 }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: "+"; font: 400 26px/1 var(--body); color: var(--ash); transition: transform .3s, color .2s; flex: none; }
-.faq details[open] summary::after { transform: rotate(45deg); color: var(--wine-hi); }
-.faq summary:hover::after { color: var(--skin); }
+.faq summary .ic { font-size: 22px; color: var(--ash); transition: transform .3s, color .2s; }
+.faq details[open] summary .ic { transform: rotate(45deg); color: var(--wine-hi); }
+.faq summary:hover .ic { color: var(--skin); }
 .faq .ans { color: var(--ash); padding-bottom: 22px; max-width: 40em; }
 .faq .ans b { color: var(--skin); font-weight: 600; }
 
@@ -270,7 +280,7 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--graphite); }
 .steps li { padding: 28px 28px 0 0; display: grid; gap: 12px; align-content: start; }
 .steps li + li { padding-left: 28px; border-left: 1px solid var(--graphite); }
-.steps .n { font: 900 64px/1 var(--display); color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--skin) 55%, transparent); }
+.steps .n { font: 900 64px/1 var(--display); color: transparent; -webkit-text-stroke: 1.5px var(--stroke-soft); }
 .steps h3 { font-size: 22px; line-height: 1.1; }
 .steps p { color: var(--ash); font-size: 16px; }
 @media (max-width: 900px) {
@@ -294,11 +304,11 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .hero-band > .hero { position: relative; }
 .tiger {
   position: absolute; z-index: -1; pointer-events: none;
-  top: 50%; right: -10%; translate: 0 -50%;
+  top: 50%; right: -10%; transform: translateY(-50%);
   width: min(1150px, 78vw); height: auto;
   opacity: .095;
 }
-@media (max-width: 860px) { .tiger { top: 4%; right: -45%; translate: none; width: 150vw; opacity: .095; } }
+@media (max-width: 860px) { .tiger { top: 4%; right: -45%; transform: none; width: 150vw; opacity: .095; } }
 
 /* Кнопки «написать мастеру» */
 .write { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: clamp(40px, 5vw, 64px); }
@@ -307,7 +317,7 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .write-card {
   display: flex; align-items: center; gap: 18px; min-width: 0;
   padding: 14px 24px 14px 14px; text-decoration: none;
-  border: 1px solid var(--graphite); border-radius: 999px;
+  border: 1px solid var(--edge); border-radius: 999px;
   transition: background .2s, border-color .2s;
 }
 .write-card:hover { background: var(--wine); border-color: var(--wine); }
@@ -333,25 +343,32 @@ footer .site { margin-left: auto; }
 /* Просмотр работы */
 dialog.lb {
   border: 0; padding: 0; margin: 0; max-width: none; max-height: none;
-  width: 100%; height: 100%; background: color-mix(in srgb, var(--ink) 94%, transparent); color: var(--skin);
+  width: 100%; height: 100%; background: var(--veil-strong); color: var(--skin);
 }
 dialog.lb::backdrop { background: var(--ink); opacity: .6; }
 .lb-inner { position: absolute; inset: 0; display: grid; place-items: center; padding: calc(64px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(64px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
-.lb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.lb img { max-width: 100%; max-height: 100%; object-fit: contain; transition: opacity .2s; }
+.lb.waiting img { opacity: .45; }
 .lb .ctrl {
-  position: absolute; background: var(--ink); color: var(--skin); border: 1px solid var(--graphite);
-  width: 48px; height: 48px; border-radius: 50%; font: 400 22px/1 var(--body); cursor: pointer;
+  position: absolute; background: var(--ink); color: var(--skin); border: 1px solid var(--edge);
+  width: 48px; height: 48px; border-radius: 50%; font-size: 22px; cursor: pointer;
   display: grid; place-items: center;
 }
 .lb .ctrl:hover { border-color: var(--skin); }
 .lb .close { top: calc(12px + env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); }
-.lb .prev { left: max(12px, env(safe-area-inset-left, 0px)); top: 50%; translate: 0 -50%; }
-.lb .next { right: max(12px, env(safe-area-inset-right, 0px)); top: 50%; translate: 0 -50%; }
+.lb .prev { left: max(12px, env(safe-area-inset-left, 0px)); top: 50%; transform: translateY(-50%); }
+.lb .next { right: max(12px, env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%); }
 .lb .cap { position: absolute; left: 0; right: 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); text-align: center; color: var(--ash); font-size: 14px; padding-inline: 16px; }
-@media (max-width: 600px) { .lb .prev, .lb .next { top: auto; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); translate: none; } .lb .cap { bottom: calc(70px + env(safe-area-inset-bottom, 0px)); } }
+@media (max-width: 600px) { .lb .prev, .lb .next { top: auto; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); transform: none; } .lb .cap { bottom: calc(70px + env(safe-area-inset-bottom, 0px)); } }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+</svg>
 <header class="top">
   <div class="wrap">
     <a class="mark" href="#top" aria-label="Грамма, наверх">
@@ -415,7 +432,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
             <button type="button" data-open="naya-17"><img src="img/naya-17-s.webp" alt="Медведь, реализм на предплечье" loading="lazy"></button>
           </div>
           <div class="mgal" id="mgal-naya" inert><div><div class="thumbs"></div></div></div>
-          <button class="btn mtoggle" type="button" data-master="naya" aria-expanded="false" aria-controls="mgal-naya"><span class="plus" aria-hidden="true">+</span><span class="lbl">Все работы Наи</span></button>
+          <button class="btn mtoggle" type="button" data-master="naya" aria-expanded="false" aria-controls="mgal-naya"><svg class="ic plus" aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl">Все работы Наи</span></button>
         </article>
         <article class="master" data-list="shuga">
           <div class="master-photo">
@@ -432,7 +449,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
             <button type="button" data-open="shuga-03"><img src="img/shuga-03-s.webp" alt="Иисус в терновом венце на предплечье" loading="lazy"></button>
           </div>
           <div class="mgal" id="mgal-shuga" inert><div><div class="thumbs"></div></div></div>
-          <button class="btn mtoggle" type="button" data-master="shuga" aria-expanded="false" aria-controls="mgal-shuga"><span class="plus" aria-hidden="true">+</span><span class="lbl">Все работы Шуги</span></button>
+          <button class="btn mtoggle" type="button" data-master="shuga" aria-expanded="false" aria-controls="mgal-shuga"><svg class="ic plus" aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl">Все работы Шуги</span></button>
         </article>
       </div>
     </div>
@@ -443,7 +460,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
       <div class="gal-head">
         <h2 class="mid">галерея работ</h2>
         <button class="btn" type="button" id="gal-toggle" aria-expanded="false" aria-controls="gal">
-          <span class="plus" aria-hidden="true">+</span><span id="gal-label">Открыть галерею</span>
+          <svg class="ic plus" aria-hidden="true"><use href="#i-plus"/></svg><span id="gal-label">Открыть галерею</span>
         </button>
       </div>
       <div class="teaser" id="teaser"></div>
@@ -497,23 +514,23 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
       <h2 class="mid">вопросы</h2>
       <div class="faq">
         <details>
-          <summary>Сколько стоит татуировка?</summary>
+          <summary>Сколько стоит татуировка?<svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></summary>
           <p class="ans">От <b>2&nbsp;000&nbsp;₽</b>.</p>
         </details>
         <details>
-          <summary>Больно ли это?</summary>
+          <summary>Больно ли это?<svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></summary>
           <p class="ans">Татуировка не очень приятный процесс, но сеансы на обычных, не экстремальных местах проходят комфортно.</p>
         </details>
         <details>
-          <summary>С какого возраста можно?</summary>
+          <summary>С какого возраста можно?<svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></summary>
           <p class="ans">С 18 лет и старше. Лучше подумать подольше, чтобы быть благодарным себе в будущем.</p>
         </details>
         <details>
-          <summary>Сколько заживает татуировка?</summary>
+          <summary>Сколько заживает татуировка?<svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></summary>
           <p class="ans">По-разному, это зависит от объёма татуировки. В среднем около 3 дней непосредственного ухода и около недели дополнительного увлажнения кожи.</p>
         </details>
         <details>
-          <summary>Как ухаживать за татуировкой?</summary>
+          <summary>Как ухаживать за татуировкой?<svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></summary>
           <!-- TODO: когда будет готова страница с памяткой, заменить текст ниже ссылкой на неё -->
           <p class="ans">Всё подробно описано в нашей памятке по уходу. Совсем скоро она появится на сайте.</p>
         </details>
@@ -584,12 +601,13 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
   </div>
 </footer>
 
+<template id="i-plus-tpl"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></template>
 <dialog class="lb" id="lb" aria-label="Просмотр работы">
   <div class="lb-inner"><img id="lb-img" alt=""></div>
   <p class="cap" id="lb-cap"></p>
-  <button class="ctrl close" type="button" id="lb-close" aria-label="Закрыть">✕</button>
-  <button class="ctrl prev" type="button" id="lb-prev" aria-label="Предыдущая работа">‹</button>
-  <button class="ctrl next" type="button" id="lb-next" aria-label="Следующая работа">›</button>
+  <button class="ctrl close" type="button" id="lb-close" aria-label="Закрыть"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+  <button class="ctrl prev" type="button" id="lb-prev" aria-label="Предыдущая работа"><svg class="ic" aria-hidden="true"><use href="#i-left"/></svg></button>
+  <button class="ctrl next" type="button" id="lb-next" aria-label="Следующая работа"><svg class="ic" aria-hidden="true"><use href="#i-right"/></svg></button>
 </dialog>
 
 <script>
@@ -612,12 +630,33 @@ for (let i = 0; i < max; i++) {
 }
 const byId = Object.fromEntries(works.map(w => [w.id, w]));
 
+// превью работы: кнопка с картинкой, без сборки HTML строкой
+function thumb(w, size = [240, 320], label) {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.dataset.open = w.id;
+  const img = document.createElement("img");
+  img.src = `img/${w.id}-s.webp`;
+  img.alt = w.alt;
+  img.loading = "lazy";
+  img.width = size[0];
+  img.height = size[1];
+  b.append(img);
+  if (label) {
+    const s = document.createElement("span");
+    s.className = "who";
+    s.textContent = label;
+    b.append(s);
+  }
+  return b;
+}
+
 
 // ленты
 const reelPick1 = ["shuga-20","naya-17","shuga-05","naya-11","shuga-21","naya-03","shuga-12","naya-20","shuga-06","naya-13","shuga-03"];
 const reelPick2 = ["naya-19","shuga-23","naya-02","shuga-18","naya-16","shuga-22","naya-22","shuga-14","naya-12","shuga-17"];
 function fillReel(el, ids) {
-  el.innerHTML = ids.map(id => `<button type="button" data-open="${id}"><img src="img/${id}-s.webp" alt="${byId[id].alt}" loading="lazy" width="240" height="320"></button>`).join("");
+  el.replaceChildren(...ids.map(id => thumb(byId[id])));
 }
 fillReel(document.getElementById("reel1"), reelPick1);
 fillReel(document.getElementById("reel2"), reelPick2);
@@ -630,11 +669,14 @@ let ticking = false;
 function moveReels() {
   ticking = false;
   if (calm.matches) return;
+  // сначала все чтения раскладки, потом все записи: иначе браузер пересчитывает страницу в каждом кадре
   const box = reel.getBoundingClientRect();
-  const end = box.top + scrollY + box.height;          // прокрутка, при которой ленты уходят за верх экрана
-  const p = Math.min(1, Math.max(0, scrollY / end));
+  const y = scrollY, view = reel.clientWidth;
+  const widths = tracks.map(t => t.scrollWidth);
+  const end = box.top + y + box.height;                // прокрутка, при которой ленты уходят за верх экрана
+  const p = Math.min(1, Math.max(0, y / end));
   tracks.forEach((t, i) => {
-    const travel = Math.min(t.scrollWidth - reel.clientWidth, end);
+    const travel = Math.min(widths[i] - view, end);
     const x = i % 2 ? -travel * (1 - p) : -travel * p;
     t.style.transform = `translate3d(${x}px, 0, 0)`;
   });
@@ -650,9 +692,7 @@ let current = "all";
 let visible = works;
 function render() {
   visible = current === "all" ? works : works.filter(w => w.m === current);
-  grid.innerHTML = visible.map(w =>
-    `<button type="button" data-open="${w.id}"><img src="img/${w.id}-s.webp" alt="${w.alt}" loading="lazy"><span class="who">${WHO[w.m]}</span></button>`
-  ).join("");
+  grid.replaceChildren(...visible.map(w => thumb(w, [240, 320], WHO[w.m])));
   document.querySelectorAll(".filters button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.f === current)));
 }
 function setFilter(f) { current = f; render(); }
@@ -664,9 +704,16 @@ const gal = document.getElementById("gal"), galToggle = document.getElementById(
 const galLabel = document.getElementById("gal-label");
 const teaser = document.getElementById("teaser");
 const teaserPick = ["naya-06","shuga-22","naya-09","shuga-04","naya-15","shuga-09","naya-21"];
-teaser.innerHTML = teaserPick.map(id => `<button type="button" data-open="${id}"><img src="img/${id}-s.webp" alt="${byId[id].alt}" loading="lazy" width="240" height="320"></button>`).join("")
-  + `<button type="button" class="more" id="teaser-more"><b>+</b><span>все работы</span></button>`;
-document.getElementById("teaser-more").addEventListener("click", () => setGallery(true));
+const more = document.createElement("button");
+more.type = "button";
+more.className = "more";
+more.id = "teaser-more";
+more.append(document.getElementById("i-plus-tpl").content.cloneNode(true));
+const moreText = document.createElement("span");
+moreText.textContent = "все работы";
+more.append(moreText);
+teaser.replaceChildren(...teaserPick.map(id => thumb(byId[id])), more);
+more.addEventListener("click", () => setGallery(true));
 function setGallery(isOpen) {
   teaser.hidden = isOpen;
   gal.classList.toggle("open", isOpen);
@@ -690,7 +737,7 @@ document.querySelectorAll(".mtoggle").forEach(btn => {
   btn.addEventListener("click", () => {
     const isOpen = !box.classList.contains("open");
     if (isOpen && !box.dataset.ready) {
-      box.querySelector(".thumbs").innerHTML = rest.map(w => `<button type="button" data-open="${w.id}"><img src="img/${w.id}-s.webp" alt="${w.alt}" loading="lazy" width="240" height="240"></button>`).join("");
+      box.querySelector(".thumbs").replaceChildren(...rest.map(w => thumb(w, [240, 240])));
       box.dataset.ready = "1";
     }
     box.classList.toggle("open", isOpen);
@@ -703,28 +750,60 @@ document.querySelectorAll(".mtoggle").forEach(btn => {
 
 // просмотр
 const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbCap = document.getElementById("lb-cap");
-let list = works, idx = 0;
-function show(i) {
-  idx = (i + list.length) % list.length;
-  const w = list[idx];
-  lbImg.src = `img/${w.id}.webp`;
+let list = works, idx = 0, want = 0, dimTimer = 0;
+const bigSrc = w => `img/${w.id}.webp`;
+const cache = new Map();
+function load(w) {                                   // одна загрузка на картинку, повторно берётся готовая
+  if (!cache.has(w.id)) {
+    const im = new Image();
+    im.src = bigSrc(w);
+    cache.set(w.id, (im.decode ? im.decode() : Promise.resolve()).catch(() => {}));
+  }
+  return cache.get(w.id);
+}
+function setShown(w, src) {
+  lbImg.src = src;
   lbImg.alt = w.alt;
   lbCap.textContent = `${w.alt}. Мастер: ${WHO[w.m]}`;
+}
+function show(i, first) {
+  idx = (i + list.length) % list.length;
+  const w = list[idx], ticket = ++want;
+  if (first) setShown(w, `img/${w.id}-s.webp`);      // превью уже в кэше: окно открывается сразу
+  clearTimeout(dimTimer);
+  dimTimer = setTimeout(() => lb.classList.add("waiting"), 300);   // приглушаем, только если ждать заметно
+  load(w).then(() => {
+    if (ticket !== want) return;                     // пока грузилось, пролистали дальше
+    clearTimeout(dimTimer);
+    lb.classList.remove("waiting");
+    setShown(w, bigSrc(w));                          // прежняя работа стоит, пока новая не готова
+  });
+  load(list[(idx + 1) % list.length]);               // соседи подтягиваются заранее
+  load(list[(idx - 1 + list.length) % list.length]);
 }
 function open(id, from) {
   const own = from && from.closest("[data-list]");
   list = own ? ORDER[own.dataset.list] : (from && from.closest("#grid") ? visible : works);
-  show(list.findIndex(w => w.id === id));
-  if (!lb.open) lb.showModal();
+  show(list.findIndex(w => w.id === id), true);
+  if (!lb.open) {
+    lb.showModal();
+    history.pushState({ lb: 1 }, "");                // окно — шаг истории: «назад» на телефоне закрывает его
+  }
 }
+function closeLb() {
+  if (history.state && history.state.lb) history.back();
+  else lb.close();
+}
+addEventListener("popstate", () => { if (lb.open) lb.close(); });
+lb.addEventListener("cancel", e => { e.preventDefault(); closeLb(); });
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-open]");
   if (t) open(t.dataset.open, t);
 });
-document.getElementById("lb-close").onclick = () => lb.close();
+document.getElementById("lb-close").onclick = closeLb;
 document.getElementById("lb-prev").onclick = () => show(idx - 1);
 document.getElementById("lb-next").onclick = () => show(idx + 1);
-lb.addEventListener("click", e => { if (e.target.classList.contains("lb-inner")) lb.close(); });
+lb.addEventListener("click", e => { if (e.target.classList.contains("lb-inner")) closeLb(); });
 lb.addEventListener("keydown", e => {
   if (e.key === "ArrowLeft") show(idx - 1);
   if (e.key === "ArrowRight") show(idx + 1);
