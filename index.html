@@ -237,6 +237,17 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 }
 
 /* Контакты */
+/* Тигр со стены студии на фоне блока записи */
+.booking { position: relative; overflow: hidden; isolation: isolate; }
+.booking > .wrap { position: relative; }
+.tiger {
+  position: absolute; z-index: -1; pointer-events: none;
+  top: clamp(40px, 6vw, 90px); right: -14%;
+  width: min(1200px, 92vw); height: auto;
+  opacity: .07;
+}
+@media (max-width: 700px) { .tiger { top: 60px; right: -55%; width: 170vw; opacity: .08; } }
+
 /* Кнопки «написать мастеру» */
 .write { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: clamp(40px, 5vw, 64px); }
 @media (max-width: 700px) { .write { grid-template-columns: 1fr; } }
@@ -412,7 +423,8 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
     </div>
   </section>
 
-  <section id="process">
+  <section id="process" class="booking">
+    <img class="tiger" src="img/tiger.svg" alt="" aria-hidden="true" width="1667" height="1144" loading="lazy">
     <div class="wrap">
       <div class="sec-head">
         <h2>как записаться</h2>
