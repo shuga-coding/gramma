@@ -242,25 +242,12 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
   .hygiene, .hygiene ul { grid-template-columns: 1fr; }
 }
 
-/* Отзывы */
-.reviews-box { display: grid; gap: 20px; justify-items: start; }
+.where-reviews { display: grid; gap: 16px; align-content: start; justify-items: start; min-width: 0; }
 .reviews-widget:empty { display: none; }
-.reviews-widget { width: 100%; max-width: 760px; }
+.reviews-widget { width: 100%; }
 .reviews-widget iframe { width: 100%; border: 0; }
-
-/* Вопросы */
-.faq { border-top: 1px solid var(--graphite); max-width: 920px; }
-.faq details { border-bottom: 1px solid var(--graphite); }
-.faq summary {
-  list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px;
-  padding-block: 22px; font: 700 clamp(18px, 2vw, 24px)/1.2 var(--display); letter-spacing: -0.01em; text-transform: lowercase;
-}
-.faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: "+"; font: 400 28px/1 var(--body); color: var(--ash); transition: transform .3s; flex: none; }
-.faq details[open] summary::after { transform: rotate(45deg); color: var(--wine-hi); }
-.faq summary:hover::after { color: var(--skin); }
-.faq .ans { color: var(--ash); padding-bottom: 24px; max-width: 40em; }
-.faq .ans b { color: var(--skin); font-weight: 600; }
+.steps .note { color: var(--skin); font-size: 14px; line-height: 1.45; padding-top: 10px; border-top: 1px dashed var(--graphite); opacity: .85; }
+@media (max-width: 520px) { .steps .note { grid-column: 2; } }
 
 .price { display: inline-flex; align-items: baseline; gap: 12px; margin-top: 18px; color: var(--ash); }
 .price b { font: 900 clamp(28px, 3vw, 40px)/1 var(--display); color: var(--skin); letter-spacing: -0.02em; }
@@ -295,9 +282,9 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
   position: absolute; z-index: -1; pointer-events: none;
   top: 50%; right: -10%; translate: 0 -50%;
   width: min(1150px, 78vw); height: auto;
-  opacity: .1;
+  opacity: .045;
 }
-@media (max-width: 860px) { .tiger { top: 4%; right: -45%; translate: none; width: 150vw; opacity: .09; } }
+@media (max-width: 860px) { .tiger { top: 4%; right: -45%; translate: none; width: 150vw; opacity: .05; } }
 
 /* Кнопки «написать мастеру» */
 .write { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: clamp(40px, 5vw, 64px); }
@@ -316,9 +303,10 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .write-card:hover .write-text span { color: var(--skin); }
 .write-note { color: var(--ash); margin-top: 16px; font-size: 15px; }
 .write-note a { color: var(--skin); text-decoration-color: var(--wine-hi); text-underline-offset: 4px; }
-.where { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 28px 48px; margin-top: clamp(56px, 7vw, 96px); padding-top: clamp(28px, 4vw, 40px); border-top: 1px solid var(--graphite); }
+.where { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; gap: 40px 64px; margin-top: clamp(56px, 7vw, 96px); padding-top: clamp(28px, 4vw, 40px); border-top: 1px solid var(--graphite); }
 .where h3 { font-size: 18px; color: var(--ash); font-weight: 700; margin-bottom: 14px; letter-spacing: 0; }
-.where .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.where .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+@media (max-width: 860px) { .where { grid-template-columns: 1fr; } }
 .addr { font: 700 clamp(22px, 2.4vw, 32px)/1.2 var(--display); letter-spacing: -0.01em; }
 .addr-note { color: var(--ash); margin-top: 14px; max-width: 40em; }
 
@@ -359,8 +347,6 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
       <a href="#works" data-gal>Галерея</a>
       <a href="#masters">Мастера</a>
       <a href="#studio">Студия</a>
-      <a href="#reviews">Отзывы</a>
-      <a href="#faq">Вопросы</a>
       <a href="#process">Как записаться</a>
     </nav>
     <a class="btn solid" href="#process">Записаться</a>
@@ -490,51 +476,6 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
     </div>
   </section>
 
-  <section id="reviews">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 class="mid">отзывы</h2>
-        <p class="lead">Что говорят о нас клиенты на Яндекс Картах.</p>
-      </div>
-      <div class="reviews-box">
-        <!-- СЮДА вставить код виджета отзывов Яндекс Карт (внутрь div.reviews-widget). Пока он пуст, блок скрыт и видна только кнопка. -->
-        <div class="reviews-widget"></div>
-        <a class="btn" href="https://yandex.ru/profile/101850644744" target="_blank" rel="noopener">Читать отзывы на Яндекс Картах</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="faq" style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 class="mid">вопросы</h2>
-      </div>
-      <div class="faq">
-        <details>
-          <summary>Сколько стоит татуировка?</summary>
-          <p class="ans">От <b>2&nbsp;000&nbsp;₽</b>. Точную стоимость мастер назовёт, когда обсудит с вами идею.</p>
-        </details>
-        <details>
-          <summary>Больно ли это?</summary>
-          <p class="ans">Татуировка не очень приятный процесс, но сеансы на обычных, не экстремальных местах проходят комфортно.</p>
-        </details>
-        <details>
-          <summary>С какого возраста можно?</summary>
-          <p class="ans">С 18 лет и старше. Лучше подумать подольше, чтобы быть благодарным себе в будущем.</p>
-        </details>
-        <details>
-          <summary>Сколько заживает татуировка?</summary>
-          <p class="ans">По-разному, это зависит от объёма татуировки. В среднем около 3 дней непосредственного ухода и около недели дополнительного увлажнения кожи.</p>
-        </details>
-        <details>
-          <summary>Как ухаживать за татуировкой?</summary>
-          <!-- TODO: когда будет готова страница с памяткой, заменить текст ниже ссылкой на неё -->
-          <p class="ans">Всё подробно описано в нашей памятке по уходу. Совсем скоро она появится на сайте.</p>
-        </details>
-      </div>
-    </div>
-  </section>
-
   <section id="process" class="booking">
     <div class="wrap">
       <div class="sec-head">
@@ -545,10 +486,10 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
         </div>
       </div>
       <ol class="steps">
-        <li><span class="n" aria-hidden="true">1</span><h3>Сообщение</h3><p>Расскажите идею, место на теле и примерный размер. Если есть референсы, присылайте.</p></li>
+        <li><span class="n" aria-hidden="true">1</span><h3>Сообщение</h3><p>Расскажите идею, место на теле и примерный размер. Если есть референсы, присылайте.</p><p class="note">Работаем с 18 лет. Лучше подумать подольше, чтобы быть благодарным себе в будущем.</p></li>
         <li><span class="n" aria-hidden="true">2</span><h3>Эскиз</h3><p>Мастер рисует эскиз под вашу идею. Правим его вместе, пока он вам не понравится.</p></li>
-        <li><span class="n" aria-hidden="true">3</span><h3>Сеанс</h3><p>Переводим эскиз на кожу, проверяем размещение у зеркала и только потом начинаем.</p></li>
-        <li><span class="n" aria-hidden="true">4</span><h3>Заживление</h3><p>Объясняем, как ухаживать за тату, и остаёмся на связи, если появятся вопросы.</p></li>
+        <li><span class="n" aria-hidden="true">3</span><h3>Сеанс</h3><p>Переводим эскиз на кожу, проверяем размещение у зеркала и только потом начинаем.</p><p class="note">Процесс не очень приятный, но на обычных, не экстремальных местах сеанс проходит комфортно.</p></li>
+        <li><span class="n" aria-hidden="true">4</span><h3>Заживление</h3><p>Зависит от объёма татуировки. В среднем около 3 дней непосредственного ухода и около недели дополнительного увлажнения кожи.</p><!-- TODO: когда будет готова памятка по уходу, сделать текст ниже ссылкой на неё --><p class="note">Как ухаживать, подробно расписано в нашей памятке. Скоро она появится на сайте.</p></li>
       </ol>
 
       <div class="write">
@@ -568,12 +509,18 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
           <h3>где нас найти</h3>
           <p class="addr">Владимир, ул.&nbsp;Добросельская,&nbsp;171Б<br>ТЦ «Алмаз», 2&nbsp;этаж, пом.&nbsp;7а</p>
           <p class="addr-note">Вход через ТЦ, второй этаж. Часы работы договорные: время консультации и сеанса согласуем с вами заранее.</p>
+          <div class="actions">
+            <a class="btn" href="https://yandex.ru/profile/101850644744" target="_blank" rel="noopener">Яндекс Карты</a>
+            <a class="btn" href="https://vk.ru/tattoo_gramma" target="_blank" rel="noopener">ВКонтакте студии</a>
+            <a class="btn" href="https://t.me/tattoo_gramma" target="_blank" rel="noopener">Телеграм</a>
+            <a class="btn" href="https://www.avito.ru/brands/a570808724131079002485e05216e51e" target="_blank" rel="noopener">Авито</a>
+          </div>
         </div>
-        <div class="actions">
-          <a class="btn" href="https://yandex.ru/profile/101850644744" target="_blank" rel="noopener">Яндекс Карты</a>
-          <a class="btn" href="https://vk.ru/tattoo_gramma" target="_blank" rel="noopener">ВКонтакте студии</a>
-          <a class="btn" href="https://t.me/tattoo_gramma" target="_blank" rel="noopener">Телеграм</a>
-          <a class="btn" href="https://www.avito.ru/brands/a570808724131079002485e05216e51e" target="_blank" rel="noopener">Авито</a>
+        <div class="where-reviews" id="reviews">
+          <h3>отзывы</h3>
+          <!-- СЮДА вставить код виджета отзывов Яндекс Карт (внутрь div.reviews-widget). Пока он пуст, видна только кнопка. -->
+          <div class="reviews-widget"></div>
+          <a class="btn" href="https://yandex.ru/profile/101850644744" target="_blank" rel="noopener">Читать отзывы на Яндекс Картах</a>
         </div>
       </div>
     </div>
