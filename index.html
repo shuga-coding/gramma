@@ -138,23 +138,34 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 @media (max-width: 900px) { .masters { grid-template-columns: 1fr; } }
 .master { display: grid; gap: 22px; min-width: 0; }
 .master-photo { position: relative; }
-.master-photo::after { content: ""; position: absolute; inset: 55% 0 0 0; background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--ink) 75%, transparent)); pointer-events: none; }
 .master-photo img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 30%; }
 .master-name {
   position: absolute; left: -0.04em; bottom: -0.32em;
   font: 900 clamp(76px, 11vw, 168px)/0.8 var(--display);
   letter-spacing: -0.04em;
   color: var(--skin);
-  z-index: 1;
+  mix-blend-mode: difference;
   pointer-events: none;
 }
-.master-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: calc(clamp(76px, 11vw, 168px) * 0.34 + 10px); color: var(--ash); font-size: 15px; }
+.master-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; padding-top: calc(clamp(76px, 11vw, 168px) * 0.34 + 10px); color: var(--ash); font-size: 15px; }
 .master-meta strong { color: var(--skin); font-weight: 600; }
-.master-meta .vk { color: var(--skin); text-decoration: underline; text-decoration-color: var(--wine-hi); text-underline-offset: 4px; overflow-wrap: anywhere; }
-.master-meta .vk:hover { color: var(--wine-hi); }
+.master-meta .btn { padding: 11px 20px; font-size: 14px; }
+/* все работы мастера раскрываются прямо в карточке */
+.masters { align-items: start; }
+.mgal { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s cubic-bezier(.2,.7,.2,1); margin-top: -22px; }
+.mgal.open { grid-template-rows: 1fr; margin-top: -14px; }
+.mgal > div { overflow: hidden; min-height: 0; }
+.mgal .thumbs { padding-top: 0; }
+@media (prefers-reduced-motion: reduce) { .mgal { transition: none; } }
+.mtoggle { gap: 12px; }
+.mtoggle .plus { display: inline-block; font: 400 20px/1 var(--body); transition: transform .3s; }
+.mtoggle[aria-expanded="true"] .plus { transform: rotate(45deg); }
+.mtoggle .cnt { color: var(--ash); font-weight: 500; }
+.mtoggle:hover .cnt { color: inherit; }
+.mtoggle[aria-expanded="true"] .cnt { display: none; }
 .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .thumbs button { padding: 0; border: 0; background: var(--wall); cursor: zoom-in; }
-.thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; transition: opacity .2s; }
+.thumbs img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; transition: opacity .2s; }
 .thumbs button:hover img { opacity: .8; }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
 .tags li { border: 1px solid var(--graphite); border-radius: 999px; padding: 6px 14px; font-size: 14px; color: var(--skin); }
@@ -357,12 +368,12 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
         <p class="lead">Нас двое, и у каждого свой почерк. Посмотрите работы обоих и выберите, чей стиль ближе к вашей идее.</p>
       </div>
       <div class="masters">
-        <article class="master">
+        <article class="master" data-list="naya">
           <div class="master-photo">
             <img src="img/master-naya.webp" alt="Ная, мастер студии «Грамма»" width="1000" height="1500" loading="lazy">
             <div class="master-name" aria-hidden="true">ная</div>
           </div>
-          <div class="master-meta"><span><strong>Анастасия</strong>, опыт больше 5 лет</span><a class="vk" href="https://vk.ru/naya.nova" target="_blank" rel="noopener">vk.ru/naya.nova</a></div>
+          <div class="master-meta"><span><strong>Анастасия</strong>, опыт больше 5 лет</span><a class="btn solid" href="https://vk.ru/naya.nova" target="_blank" rel="noopener" aria-label="Связаться с Наей ВКонтакте">Связаться</a></div>
           <ul class="tags">
             <li>реализм</li><li>графика</li><li>портреты</li><li>животные</li><li>цветы</li><li>японские мотивы</li>
           </ul>
@@ -371,14 +382,15 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
             <button type="button" data-open="naya-20"><img src="img/naya-20-s.webp" alt="Котёнок, реализм на бедре" loading="lazy"></button>
             <button type="button" data-open="naya-17"><img src="img/naya-17-s.webp" alt="Медведь, реализм на предплечье" loading="lazy"></button>
           </div>
-          <a class="btn" href="#works" data-filter="naya">Все работы Наи</a>
+          <div class="mgal" id="mgal-naya" inert><div><div class="thumbs"></div></div></div>
+          <button class="btn mtoggle" type="button" data-master="naya" aria-expanded="false" aria-controls="mgal-naya"><span class="plus" aria-hidden="true">+</span><span class="lbl">Все работы Наи</span><span class="cnt"></span></button>
         </article>
-        <article class="master">
+        <article class="master" data-list="shuga">
           <div class="master-photo">
             <img src="img/master-shuga.webp" alt="Егор Шуга за работой в студии «Грамма»" width="904" height="1204" loading="lazy">
             <div class="master-name" aria-hidden="true">шуга</div>
           </div>
-          <div class="master-meta"><span><strong>Егор</strong>, опыт больше 5 лет</span><a class="vk" href="https://vk.ru/shugacalligraphy" target="_blank" rel="noopener">vk.ru/shugacalligraphy</a></div>
+          <div class="master-meta"><span><strong>Егор</strong>, опыт больше 5 лет</span><a class="btn solid" href="https://vk.ru/shugacalligraphy" target="_blank" rel="noopener" aria-label="Связаться с Шугой ВКонтакте">Связаться</a></div>
           <ul class="tags">
             <li>чёрно-серый реализм</li><li>портреты</li><li>религиозные сюжеты</li><li>скандинавские мотивы</li><li>блэкворк</li><li>неотрайбл</li>
           </ul>
@@ -387,7 +399,8 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
             <button type="button" data-open="shuga-20"><img src="img/shuga-20-s.webp" alt="Античный женский портрет с графикой на предплечье" loading="lazy"></button>
             <button type="button" data-open="shuga-23"><img src="img/shuga-23-s.webp" alt="Телевизор на птичьих лапах, реализм с красным" loading="lazy"></button>
           </div>
-          <a class="btn" href="#works" data-filter="shuga">Все работы Шуги</a>
+          <div class="mgal" id="mgal-shuga" inert><div><div class="thumbs"></div></div></div>
+          <button class="btn mtoggle" type="button" data-master="shuga" aria-expanded="false" aria-controls="mgal-shuga"><span class="plus" aria-hidden="true">+</span><span class="lbl">Все работы Шуги</span><span class="cnt"></span></button>
         </article>
       </div>
     </div>
@@ -590,7 +603,27 @@ document.getElementById("gal-close").addEventListener("click", () => {
   document.getElementById("works").scrollIntoView({ block: "start" });
 });
 document.querySelectorAll("[data-gal]").forEach(a => a.addEventListener("click", () => setGallery(true)));
-document.querySelectorAll("[data-filter]").forEach(a => a.addEventListener("click", () => { setFilter(a.dataset.filter); setGallery(true); }));
+// все работы мастера раскрываются в его карточке (без трёх, что уже показаны)
+document.querySelectorAll(".mtoggle").forEach(btn => {
+  const m = btn.dataset.master;
+  const box = document.getElementById(`mgal-${m}`);
+  const lbl = btn.querySelector(".lbl"), base = lbl.textContent;
+  const shown = [...btn.closest(".master").querySelectorAll(".thumbs [data-open]")].map(b => b.dataset.open);
+  const rest = ORDER[m].filter(w => !shown.includes(w.id));
+  btn.querySelector(".cnt").textContent = ORDER[m].length;
+  btn.addEventListener("click", () => {
+    const isOpen = !box.classList.contains("open");
+    if (isOpen && !box.dataset.ready) {
+      box.querySelector(".thumbs").innerHTML = rest.map(w => `<button type="button" data-open="${w.id}"><img src="img/${w.id}-s.webp" alt="${w.alt}" loading="lazy" width="240" height="240"></button>`).join("");
+      box.dataset.ready = "1";
+    }
+    box.classList.toggle("open", isOpen);
+    box.inert = !isOpen;
+    btn.setAttribute("aria-expanded", String(isOpen));
+    lbl.textContent = isOpen ? "Свернуть" : base;
+    if (!isOpen) btn.closest(".master").scrollIntoView({ block: "nearest" });
+  });
+});
 
 // просмотр
 const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbCap = document.getElementById("lb-cap");
@@ -602,14 +635,15 @@ function show(i) {
   lbImg.alt = w.alt;
   lbCap.textContent = `${w.alt}. Мастер: ${WHO[w.m]}`;
 }
-function open(id) {
-  list = visible.some(w => w.id === id) ? visible : works;
+function open(id, from) {
+  const own = from && from.closest("[data-list]");
+  list = own ? ORDER[own.dataset.list] : (from && from.closest("#grid") ? visible : works);
   show(list.findIndex(w => w.id === id));
   if (!lb.open) lb.showModal();
 }
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-open]");
-  if (t) open(t.dataset.open);
+  if (t) open(t.dataset.open, t);
 });
 document.getElementById("lb-close").onclick = () => lb.close();
 document.getElementById("lb-prev").onclick = () => show(idx - 1);
