@@ -48,6 +48,7 @@ a { color: inherit; }
 }
 h1, h2, h3 { font-family: var(--display); font-weight: 900; text-wrap: balance; margin: 0; letter-spacing: -0.02em; line-height: 0.95; text-transform: lowercase; }
 h2 { font-size: clamp(40px, 7.4vw, 104px); }
+h2.mid { font-size: clamp(32px, 4.6vw, 64px); }
 p { margin: 0; }
 .lead { color: var(--ash); max-width: 34em; }
 
@@ -137,13 +138,14 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 @media (max-width: 900px) { .masters { grid-template-columns: 1fr; } }
 .master { display: grid; gap: 22px; min-width: 0; }
 .master-photo { position: relative; }
+.master-photo::after { content: ""; position: absolute; inset: 55% 0 0 0; background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--ink) 75%, transparent)); pointer-events: none; }
 .master-photo img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 30%; }
 .master-name {
   position: absolute; left: -0.04em; bottom: -0.32em;
   font: 900 clamp(76px, 11vw, 168px)/0.8 var(--display);
   letter-spacing: -0.04em;
   color: var(--skin);
-  mix-blend-mode: difference;
+  z-index: 1;
   pointer-events: none;
 }
 .master-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: calc(clamp(76px, 11vw, 168px) * 0.34 + 10px); color: var(--ash); font-size: 15px; }
@@ -165,6 +167,15 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .gal-head .btn[aria-expanded="true"] .plus { transform: rotate(45deg); }
 .gal-count { color: var(--ash); font-weight: 500; }
 .gal-head .btn:hover .gal-count { color: inherit; }
+.teaser { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; margin-top: clamp(24px, 3vw, 36px); }
+.teaser button { padding: 0; border: 0; background: var(--wall); cursor: zoom-in; position: relative; }
+.teaser img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; transition: opacity .2s; }
+.teaser button:hover img { opacity: .8; }
+.teaser .more { cursor: pointer; color: var(--skin); border: 1px solid var(--graphite); background: var(--wall); display: grid; place-content: center; gap: 4px; text-align: center; transition: border-color .2s, background .2s; }
+.teaser .more:hover { border-color: var(--wine); background: var(--wine); }
+.teaser .more b { font: 900 clamp(22px, 2.4vw, 34px)/1 var(--display); }
+.teaser .more span { font-size: 13px; color: inherit; opacity: .8; }
+@media (max-width: 760px) { .teaser { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .gal { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .6s cubic-bezier(.2,.7,.2,1); }
 .gal.open { grid-template-rows: 1fr; }
 .gal-inner { overflow: hidden; min-height: 0; }
@@ -222,7 +233,7 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--graphite); }
 .steps li { padding: 28px 28px 0 0; display: grid; gap: 12px; align-content: start; }
 .steps li + li { padding-left: 28px; border-left: 1px solid var(--graphite); }
-.steps .n { font: 900 64px/1 var(--display); color: var(--graphite); -webkit-text-stroke: 1px var(--ash); color: transparent; }
+.steps .n { font: 900 64px/1 var(--display); color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--skin) 55%, transparent); }
 .steps h3 { font-size: 22px; line-height: 1.1; }
 .steps p { color: var(--ash); font-size: 16px; }
 @media (max-width: 900px) {
@@ -234,6 +245,10 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
   .steps { grid-template-columns: 1fr; }
   .steps li, .steps li + li { padding-left: 0; border-left: 0; border-top: 1px solid var(--graphite); }
   .steps li:first-child { border-top: 0; }
+  .steps li { grid-template-columns: 48px minmax(0, 1fr); gap: 4px 14px; padding-block: 18px; }
+  .steps .n { grid-row: span 2; font-size: 44px; }
+  .steps h3 { font-size: 20px; align-self: end; }
+  .steps p { font-size: 15px; line-height: 1.5; }
 }
 
 /* Контакты */
@@ -381,11 +396,12 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
   <section id="works" style="padding-top:0">
     <div class="wrap">
       <div class="gal-head">
-        <h2>галерея работ</h2>
+        <h2 class="mid">галерея работ</h2>
         <button class="btn" type="button" id="gal-toggle" aria-expanded="false" aria-controls="gal">
           <span class="plus" aria-hidden="true">+</span><span id="gal-label">Открыть галерею</span><span class="gal-count" id="gal-count"></span>
         </button>
       </div>
+      <div class="teaser" id="teaser"></div>
       <div class="gal" id="gal" inert>
         <div class="gal-inner">
           <div class="gal-pad">
@@ -405,7 +421,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
   <section id="studio" class="studio">
     <div class="wrap">
       <div class="sec-head">
-        <h2>студия</h2>
+        <h2 class="mid">студия</h2>
         <p class="lead">Второй этаж ТЦ «Алмаз» на Добросельской. Тёплый свет, графика на стенах и красный диван, на котором удобно ждать и обсуждать эскиз.</p>
       </div>
       <div class="studio-grid">
@@ -556,7 +572,13 @@ render();
 const gal = document.getElementById("gal"), galToggle = document.getElementById("gal-toggle");
 const galLabel = document.getElementById("gal-label");
 document.getElementById("gal-count").textContent = `${works.length} работ`;
+const teaser = document.getElementById("teaser");
+const teaserPick = ["naya-06","shuga-22","naya-09","shuga-04","naya-15","shuga-09","naya-21"];
+teaser.innerHTML = teaserPick.map(id => `<button type="button" data-open="${id}"><img src="img/${id}-s.webp" alt="${byId[id].alt}" loading="lazy" width="240" height="320"></button>`).join("")
+  + `<button type="button" class="more" id="teaser-more"><b>+${works.length - teaserPick.length}</b><span>открыть все работы</span></button>`;
+document.getElementById("teaser-more").addEventListener("click", () => setGallery(true));
 function setGallery(isOpen) {
+  teaser.hidden = isOpen;
   gal.classList.toggle("open", isOpen);
   gal.inert = !isOpen;
   galToggle.setAttribute("aria-expanded", String(isOpen));
