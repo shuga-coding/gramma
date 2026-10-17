@@ -25,7 +25,6 @@
       <span>грамма</span>
     </a>
     <nav aria-label="Разделы">
-      <a href="#works" data-gal>Галерея</a>
       <a href="#masters">Мастера</a>
       <a href="#studio">Студия</a>
       <a href="#faq">Вопросы</a>
@@ -47,7 +46,7 @@
         <p class="lead">Тату-студия во Владимире. Два мастера, у каждого за плечами более 5 лет опыта. Индивидуальные эскизы: чёрно-белый реализм, микрореализм, графика, леттеринг, лайнворк и перекрытия.</p>
         <div class="actions">
           <a class="btn solid" href="https://vk.me/club241365941" target="_blank" rel="noopener">Записаться</a>
-          <a class="btn" href="#works" data-gal>Открыть галерею</a>
+          <a class="btn" href="#masters">Смотреть работы</a>
         </div>
       </div>
     </div>
@@ -85,10 +84,13 @@
             <button class="car-btn prev" type="button" aria-label="Предыдущие работы" aria-controls="car-naya"><svg class="ic" aria-hidden="true"><use href="#i-left"/></svg></button>
             <button class="car-btn next" type="button" aria-label="Следующие работы" aria-controls="car-naya"><svg class="ic" aria-hidden="true"><use href="#i-right"/></svg></button>
           </div>
-          <div class="mgal" id="mgal-naya" inert><div><div class="thumbs"></div></div></div>
-          <div class="master-actions">
-            <button class="btn mtoggle" type="button" data-master="naya" aria-expanded="false" aria-controls="mgal-naya"><svg class="ic plus" aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl">Все работы Наи</span></button>
-            <a class="btn solid" href="https://vk.ru/naya.nova" target="_blank" rel="noopener" aria-label="Написать Нае ВКонтакте">Написать</a>
+          <div class="master-contacts">
+            <span class="contacts-label">Написать Нае</span>
+            <div class="contacts">
+              <a class="btn solid" href="https://t.me/naya_novva" target="_blank" rel="noopener" aria-label="Написать Нае в Телеграм">Телеграм</a>
+              <a class="btn" href="https://vk.ru/naya.nova" target="_blank" rel="noopener" aria-label="Написать Нае ВКонтакте">ВКонтакте</a>
+              <a class="btn" href="https://www.instagram.com/naya.novva" target="_blank" rel="noopener" aria-label="Написать Нае в Инстаграм">Инстаграм*</a>
+            </div>
           </div>
         </article>
         <article class="master" data-list="shuga">
@@ -109,37 +111,15 @@
             <button class="car-btn prev" type="button" aria-label="Предыдущие работы" aria-controls="car-shuga"><svg class="ic" aria-hidden="true"><use href="#i-left"/></svg></button>
             <button class="car-btn next" type="button" aria-label="Следующие работы" aria-controls="car-shuga"><svg class="ic" aria-hidden="true"><use href="#i-right"/></svg></button>
           </div>
-          <div class="mgal" id="mgal-shuga" inert><div><div class="thumbs"></div></div></div>
-          <div class="master-actions">
-            <button class="btn mtoggle" type="button" data-master="shuga" aria-expanded="false" aria-controls="mgal-shuga"><svg class="ic plus" aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl">Все работы Шуги</span></button>
-            <a class="btn solid" href="https://vk.ru/shugacalligraphy" target="_blank" rel="noopener" aria-label="Написать Шуге ВКонтакте">Написать</a>
+          <div class="master-contacts">
+            <span class="contacts-label">Написать Шуге</span>
+            <div class="contacts">
+              <a class="btn solid" href="https://t.me/shuga_tattoo" target="_blank" rel="noopener" aria-label="Написать Шуге в Телеграм">Телеграм</a>
+              <a class="btn" href="https://vk.ru/shugacalligraphy" target="_blank" rel="noopener" aria-label="Написать Шуге ВКонтакте">ВКонтакте</a>
+              <a class="btn" href="https://www.instagram.com/shuga.tattoo" target="_blank" rel="noopener" aria-label="Написать Шуге в Инстаграм">Инстаграм*</a>
+            </div>
           </div>
         </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="works" style="padding-top:0">
-    <div class="wrap">
-      <div class="gal-head">
-        <h2 class="mid">Галерея работ</h2>
-        <button class="btn" type="button" id="gal-toggle" aria-expanded="false" aria-controls="gal">
-          <svg class="ic plus" aria-hidden="true"><use href="#i-plus"/></svg><span id="gal-label">Открыть галерею</span>
-        </button>
-      </div>
-      <div class="teaser" id="teaser"></div>
-      <div class="gal" id="gal" inert>
-        <div class="gal-inner">
-          <div class="gal-pad">
-            <div class="filters" role="group" aria-label="Чьи работы показать">
-              <button type="button" data-f="all" aria-pressed="true">Все</button>
-              <button type="button" data-f="naya" aria-pressed="false">Ная</button>
-              <button type="button" data-f="shuga" aria-pressed="false">Шуга</button>
-            </div>
-            <div class="grid" id="grid"></div>
-            <button class="btn" type="button" id="gal-close">Свернуть галерею</button>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -148,7 +128,10 @@
     <div class="wrap">
       <div class="sec-head">
         <h2 class="mid">Студия</h2>
-        <p class="lead">Второй этаж ТЦ «Алмаз» на Добросельской: над HookahPlace.</p>
+        <div class="addr-block">
+          <p class="addr small">ул.&nbsp;Добросельская, д.&nbsp;171Б, пом.&nbsp;7а <span class="addr-floor">(2&nbsp;этаж)</span></p>
+          <p class="addr-sub">* В здании ТЦ «Алмаз»: там же, где находится HookahPlace.</p>
+        </div>
       </div>
       <div class="studio-grid">
         <figure class="a"><img src="img/room-01.webp" alt="Общий вид студии: рабочие места и зона отдыха" loading="lazy"></figure>
@@ -214,34 +197,27 @@
         <li><span class="n" aria-hidden="true">1</span><h3>Сообщение</h3><p>Расскажите идею, место на теле и примерный размер. Если есть картинки для примера, их можно приложить.</p></li>
         <li><span class="n" aria-hidden="true">2</span><h3>Эскиз</h3><p>Мастер рисует эскиз под вашу идею. Правим его вместе, пока он вам не понравится.</p></li>
         <li><span class="n" aria-hidden="true">3</span><h3>Сеанс</h3><p>Переводим эскиз на кожу и вместе с вами смотрим у зеркала, как он лёг. Работать начинаем, когда размещение нравится и вам, и мастеру.</p></li>
-        <li><span class="n" aria-hidden="true">4</span><h3>Заживление</h3><p>Пока татуировка заживает, мастер на связи и ответит на вопросы.</p></li>
+        <li><span class="n" aria-hidden="true">4</span><h3>Заживление</h3><p>Мастер на связи, пока татуировка заживает, и после: ответит на вопросы, если они возникнут.</p></li>
       </ol>
 
-      <div class="write">
-        <a class="write-card" href="https://vk.ru/naya.nova" target="_blank" rel="noopener">
-          <img src="img/master-naya.webp" alt="" width="1000" height="1500" loading="lazy">
-          <span class="write-text"><b>Написать Нае</b><span>ВКонтакте, vk.ru/naya.nova</span></span>
-        </a>
-        <a class="write-card" href="https://vk.ru/shugacalligraphy" target="_blank" rel="noopener">
-          <img src="img/master-shuga.webp" alt="" width="904" height="1204" loading="lazy">
-          <span class="write-text"><b>Написать Шуге</b><span>ВКонтакте, vk.ru/shugacalligraphy</span></span>
-        </a>
-        <a class="write-card studio-tg" href="https://vk.me/club241365941" target="_blank" rel="noopener">
-          <span class="mark-ico"><img src="img/logo_small.svg" alt="" width="701" height="618"></span>
-          <span class="write-text"><b>Не знаете, к кому?</b><span>Напишите студии ВКонтакте, подскажем</span></span>
-        </a>
+      <div class="reach">
+        <p class="reach-text">Напишите мастеру напрямую: контакты есть в карточках Наи и Шуги. Или напишите студии, подскажем, к кому лучше обратиться.</p>
+        <div class="contacts">
+          <a class="btn solid" href="https://t.me/tattoo_gramma" target="_blank" rel="noopener">Телеграм</a>
+          <a class="btn" href="https://vk.ru/tattoo_gramma" target="_blank" rel="noopener">ВКонтакте</a>
+          <a class="btn" href="https://instagram.com/tattoo_gramma" target="_blank" rel="noopener">Инстаграм*</a>
+          <a class="btn mail" href="mailto:info@gramma.tattoo">info@gramma.tattoo</a>
+        </div>
       </div>
-
 
       <div class="where" id="contacts">
         <div>
           <h3>Где нас найти</h3>
-          <p class="addr">Владимир, ул.&nbsp;Добросельская, 171Б<br>ТЦ «Алмаз», 2&nbsp;этаж, пом.&nbsp;7а</p>
-          <p class="addr-note">Вход через ТЦ, второй этаж. Работаем только по записи.</p>
+          <p class="addr">ул.&nbsp;Добросельская, д.&nbsp;171Б, пом.&nbsp;7а <span class="addr-floor">(2&nbsp;этаж)</span></p>
+          <p class="addr-sub">* В здании ТЦ «Алмаз»: там же, где находится HookahPlace.</p>
+          <p class="addr-note">Работаем только по записи.</p>
           <div class="actions">
             <a class="btn" href="https://yandex.ru/profile/101850644744" target="_blank" rel="noopener">Яндекс Карты</a>
-            <a class="btn" href="https://vk.ru/tattoo_gramma" target="_blank" rel="noopener">ВКонтакте студии</a>
-            <a class="btn" href="https://t.me/tattoo_gramma" target="_blank" rel="noopener">Телеграм</a>
             <a class="btn" href="https://www.avito.ru/brands/a570808724131079002485e05216e51e" target="_blank" rel="noopener">Авито</a>
           </div>
         </div>
@@ -261,10 +237,10 @@
     <img src="img/logo_small.svg" alt="" width="24" height="21">
     <span>© 2026 Тату-студия «Грамма», Владимир</span>
     <span class="site">gramma.tattoo</span>
+    <p class="legal">* Инстаграм принадлежит компании Meta, признанной в России экстремистской и запрещённой.</p>
   </div>
 </footer>
 
-<template id="i-plus-tpl"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></template>
 <dialog class="lb" id="lb" aria-label="Просмотр работы">
   <div class="lb-inner"><img id="lb-img" alt=""></div>
   <p class="cap" id="lb-cap"></p>

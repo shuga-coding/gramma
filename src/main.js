@@ -9,7 +9,7 @@ const ORDER = {
   naya: items("naya"),
   shuga: [...items("shuga").slice(19), ...items("shuga").slice(0, 19)]
 };
-// чередуем мастеров, чтобы в общей сетке работы шли вперемешку
+// чередуем мастеров: в просмотре из ленты работы идут вперемешку
 const works = [];
 const max = Math.max(ORDER.naya.length, ORDER.shuga.length);
 for (let i = 0; i < max; i++) {
@@ -48,92 +48,44 @@ function fillReel(el, ids) {
 fillReel(document.getElementById("reel1"), reelPick1);
 fillReel(document.getElementById("reel2"), reelPick2);
 
-// ленты едут вслед за прокруткой: верхняя влево, нижняя вправо
+// ленты чуть смещаются вслед за прокруткой: медленно и с мягким догоном, чтобы не кружилась голова
 const reel = document.querySelector(".reel");
 const tracks = [...reel.querySelectorAll(".track")];
 const calm = matchMedia("(prefers-reduced-motion: reduce)");
-let ticking = false;
-function moveReels() {
-  ticking = false;
-  if (calm.matches) return;
-  // сначала все чтения раскладки, потом все записи: иначе браузер пересчитывает страницу в каждом кадре
+const SPEED = 0.18;                                  // на сколько пикселей сдвигается лента за пиксель прокрутки
+const EASE = 0.08;                                   // доля пути, которую лента проходит за кадр
+let travel = [], end = 1, cur = null, running = false;
+function measure() {                                 // размеры меняются только при смене ширины окна
   const box = reel.getBoundingClientRect();
-  const y = scrollY, view = reel.clientWidth;
-  const widths = tracks.map(t => t.scrollWidth);
-  const end = box.top + y + box.height;                // прокрутка, при которой ленты уходят за верх экрана
-  const p = Math.min(1, Math.max(0, y / end));
-  tracks.forEach((t, i) => {
-    const travel = Math.min(widths[i] - view, end);
-    const x = i % 2 ? -travel * (1 - p) : -travel * p;
-    t.style.transform = `translate3d(${x}px, 0, 0)`;
+  end = Math.max(1, box.top + scrollY + box.height); // прокрутка, при которой ленты уходят за верх экрана
+  const view = reel.clientWidth;
+  travel = tracks.map(t => Math.max(0, Math.min(t.scrollWidth - view, end * SPEED)));
+}
+function target() {
+  const p = Math.min(1, Math.max(0, scrollY / end));
+  return tracks.map((t, i) => i % 2 ? -travel[i] * (1 - p) : -travel[i] * p);
+}
+function step() {
+  const goal = target();                             // чтение
+  if (!cur) cur = goal.slice();
+  let moving = false;
+  tracks.forEach((t, i) => {                         // записи
+    const d = goal[i] - cur[i];
+    if (Math.abs(d) < 0.3) cur[i] = goal[i]; else { cur[i] += d * EASE; moving = true; }
+    t.style.transform = `translate3d(${cur[i].toFixed(1)}px, 0, 0)`;
   });
+  running = moving;
+  if (moving) requestAnimationFrame(step);
 }
-function requestMove() { if (!ticking) { ticking = true; requestAnimationFrame(moveReels); } }
-addEventListener("scroll", requestMove, { passive: true });
-addEventListener("resize", requestMove);
-moveReels();
-
-// сетка
-const grid = document.getElementById("grid");
-let current = "all";
-let visible = works;
-function render() {
-  visible = current === "all" ? works : works.filter(w => w.m === current);
-  grid.replaceChildren(...visible.map(w => thumb(w, [240, 320], WHO[w.m])));
-  document.querySelectorAll(".filters button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.f === current)));
+function kick() {
+  if (calm.matches || running) return;
+  running = true;
+  requestAnimationFrame(step);
 }
-function setFilter(f) { current = f; render(); }
-document.querySelectorAll(".filters button").forEach(b => b.addEventListener("click", () => setFilter(b.dataset.f)));
-render();
-
-// раскрытие галереи
-const gal = document.getElementById("gal"), galToggle = document.getElementById("gal-toggle");
-const galLabel = document.getElementById("gal-label");
-const teaser = document.getElementById("teaser");
-const teaserPick = ["naya-06","shuga-22","naya-09","shuga-04","naya-15","shuga-09","naya-21"];
-const more = document.createElement("button");
-more.type = "button";
-more.className = "more";
-more.id = "teaser-more";
-more.append(document.getElementById("i-plus-tpl").content.cloneNode(true));
-const moreText = document.createElement("span");
-moreText.textContent = "открыть галерею";
-more.append(moreText);
-teaser.replaceChildren(...teaserPick.map(id => thumb(byId[id])), more);
-more.addEventListener("click", () => setGallery(true));
-function setGallery(isOpen) {
-  teaser.hidden = isOpen;
-  gal.classList.toggle("open", isOpen);
-  gal.inert = !isOpen;
-  galToggle.setAttribute("aria-expanded", String(isOpen));
-  galLabel.textContent = isOpen ? "Свернуть галерею" : "Открыть галерею";
-}
-galToggle.addEventListener("click", () => setGallery(!gal.classList.contains("open")));
-document.getElementById("gal-close").addEventListener("click", () => {
-  setGallery(false);
-  document.getElementById("works").scrollIntoView({ block: "start" });
-});
-document.querySelectorAll("[data-gal]").forEach(a => a.addEventListener("click", () => setGallery(true)));
-// все работы мастера раскрываются в его карточке (без трёх, что уже показаны)
-document.querySelectorAll(".mtoggle").forEach(btn => {
-  const m = btn.dataset.master;
-  const box = document.getElementById(`mgal-${m}`);
-  const lbl = btn.querySelector(".lbl"), base = lbl.textContent;
-  const shown = [...btn.closest(".master").querySelectorAll(".thumbs [data-open]")].map(b => b.dataset.open);
-  const rest = ORDER[m].filter(w => !shown.includes(w.id));
-  btn.addEventListener("click", () => {
-    const isOpen = !box.classList.contains("open");
-    if (isOpen && !box.dataset.ready) {
-      box.querySelector(".thumbs").replaceChildren(...rest.map(w => thumb(w, [240, 240])));
-      box.dataset.ready = "1";
-    }
-    box.classList.toggle("open", isOpen);
-    box.inert = !isOpen;
-    btn.setAttribute("aria-expanded", String(isOpen));
-    lbl.textContent = isOpen ? "Свернуть" : base;
-    if (!isOpen) btn.closest(".master").scrollIntoView({ block: "nearest" });
-  });
-});
+addEventListener("scroll", kick, { passive: true });
+addEventListener("resize", () => { measure(); kick(); });
+measure();
+kick();
 
 // просмотр
 const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbCap = document.getElementById("lb-cap");
@@ -170,7 +122,7 @@ function show(i, first) {
 }
 function open(id, from) {
   const own = from && from.closest("[data-list]");
-  list = own ? ORDER[own.dataset.list] : (from && from.closest("#grid") ? visible : works);
+  list = own ? ORDER[own.dataset.list] : works;
   show(list.findIndex(w => w.id === id), true);
   if (!lb.open) {
     lb.showModal();
