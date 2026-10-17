@@ -259,7 +259,7 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 
 /* Как записаться: шаги — на телефоне цифра слева от текста, с 521px две колонки, с 901px четыре */
 .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--graphite); }
-.steps li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 4px 14px; align-content: start; padding: 18px 0; border-top: 1px solid var(--graphite); }
+.steps li { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: 4px 14px; align-content: start; padding: 18px 0; border-top: 1px solid var(--graphite); }
 .steps li:first-child { border-top: 0; }
 .steps .n { grid-row: span 2; font: 900 44px/1 var(--display); color: transparent; -webkit-text-stroke: 1.5px var(--stroke-soft); }
 .steps h3 { font-size: 20px; line-height: 1.1; align-self: end; }
