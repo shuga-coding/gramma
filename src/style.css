@@ -166,7 +166,7 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
   pointer-events: none;
 }
 .master > .master-photo + * { padding-top: calc(clamp(76px, 11vw, 168px) * 0.34 + 10px); }   /* место под имя, которое заходит под фото */
-.master-meta { text-transform: lowercase; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; color: var(--ash); font-size: 15px; }
+.master-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; color: var(--ash); font-size: 15px; }
 .master-meta strong { color: var(--skin); font-weight: 600; }
 .master-contacts { display: grid; gap: 10px; }
 .contacts-label { color: var(--ash); font-size: 14px; text-transform: lowercase; }
