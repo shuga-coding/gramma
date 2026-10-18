@@ -1,6 +1,6 @@
 /* Мобайл-ферст: базовые стили — для телефона (~390px), шире добавляется через min-width.
    Ступени: 521 (шаги в 2 колонки), 601 (крупный первый экран, фото мастера слева), 761 (студия на 12 колонок),
-   861 (двухколоночные шапки разделов, меню), 901 (шаги в 4), 1101 (мастера рядом, преимущества в 4).
+   861 (двухколоночные шапки разделов, меню), 901 (шаги в 4), 1101 (мастера рядом).
    Короткие подписи (заголовки, меню, кнопки, метки, пункты списков) набраны строчными через CSS; обычные предложения — как в тексте.
    Образ: тёмная «стена студии», левое выравнивание, крупные строчные заголовки, логотип проявляется как штрих иглы. */
 :root {
@@ -236,14 +236,18 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
   .studio-grid .c, .studio-grid .d { grid-column: span 3; grid-row: span 2; }
   .studio-grid .e { grid-column: span 6; grid-row: span 2; }
 }
-/* Преимущества студии: одинаковые пункты, у стерильности под заголовком подпункты */
+/* Преимущества студии: три пункта в ряд, ниже отдельной строкой безопасность с подпунктами */
 .perks { list-style: none; padding: 0; margin: clamp(36px, 5vw, 56px) 0 0; display: grid; grid-template-columns: 1fr; gap: 0 32px; }
-.perks > li { display: grid; gap: 12px; align-content: start; padding-block: 16px; border-top: 1px solid var(--graphite); }
-.perks ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
-.perks ul li { text-transform: lowercase; color: var(--ash); font-size: 15px; line-height: 1.4; padding-left: 16px; position: relative; }
-.perks ul li::before { content: ""; position: absolute; left: 0; top: .5em; width: 6px; height: 6px; border-radius: 50%; background: var(--wine-hi); }
-@media (min-width: 601px) { .perks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1101px) { .perks { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.perks > li { padding-block: 16px; border-top: 1px solid var(--graphite); }
+@media (min-width: 761px) { .perks { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.safety { display: grid; grid-template-columns: 1fr; gap: 12px 32px; margin-top: clamp(24px, 3vw, 40px); padding-top: 16px; border-top: 1px solid var(--graphite); }
+.safety ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 8px 32px; }
+.safety li { text-transform: lowercase; color: var(--skin); font-size: 16px; line-height: 1.4; padding-left: 16px; position: relative; }
+.safety li::before { content: ""; position: absolute; left: 0; top: .5em; width: 6px; height: 6px; border-radius: 50%; background: var(--wine-hi); }
+@media (min-width: 761px) {
+  .safety { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+  .safety ul { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 
 /* Вопросы и отзывы: на телефоне друг под другом, с 861px заголовок слева, содержимое справа */
 .split { display: grid; grid-template-columns: 1fr; gap: 24px 64px; align-items: start; }
@@ -269,7 +273,7 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .steps li { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: 4px 14px; align-content: start; padding: 18px 0; border-top: 1px solid var(--graphite); }
 .steps li:first-child { border-top: 0; }
 .steps .n { grid-row: span 2; font: 900 44px/1 var(--display); color: transparent; -webkit-text-stroke: 1.5px var(--stroke-soft); }
-.steps h3, .perks h3 { font-size: 20px; line-height: 1.1; }   /* заголовки пунктов: шаги и преимущества */
+.steps h3, .perks h3, .safety h3 { font-size: 20px; line-height: 1.1; }   /* заголовки пунктов: шаги и преимущества */
 .steps h3 { align-self: end; }
 .steps p { color: var(--ash); font-size: 15px; line-height: 1.5; }
 @media (min-width: 521px) {
@@ -278,7 +282,7 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
   .steps li + li { padding-left: 28px; border-left: 1px solid var(--graphite); }
   .steps li:nth-child(3) { padding-left: 0; border-left: 0; }
   .steps .n { grid-row: auto; font-size: 64px; }
-  .steps h3, .perks h3 { font-size: 22px; }
+  .steps h3, .perks h3, .safety h3 { font-size: 22px; }
   .steps h3 { align-self: auto; }
   .steps p { font-size: 16px; line-height: 1.6; }
 }
