@@ -23,6 +23,9 @@
   --tap: 44px;                           /* минимальная зона нажатия */
   color-scheme: dark;
 }
+/* примерка SN Pro (см. начало main.js) */
+.f-sn, .f-sn-all { --body: "SN Pro", "Golos Text", system-ui, sans-serif; }
+.f-sn-all { --display: "SN Pro", "Unbounded", system-ui, sans-serif; }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }   /* иначе display: grid у блока перебивает атрибут hidden */
 html { scroll-behavior: smooth; overscroll-behavior-x: none; }
