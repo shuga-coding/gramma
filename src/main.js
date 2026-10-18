@@ -18,7 +18,7 @@ for (let i = 0; i < max; i++) {
 const byId = Object.fromEntries(works.map(w => [w.id, w]));
 
 // превью работы: кнопка с картинкой, без сборки HTML строкой
-function thumb(w, size = [240, 320], label) {
+function thumb(w, size = [240, 320]) {
   const b = document.createElement("button");
   b.type = "button";
   b.dataset.open = w.id;
@@ -29,63 +29,103 @@ function thumb(w, size = [240, 320], label) {
   img.width = size[0];
   img.height = size[1];
   b.append(img);
-  if (label) {
-    const s = document.createElement("span");
-    s.className = "who";
-    s.textContent = label;
-    b.append(s);
-  }
   return b;
 }
 
 
-// ленты
-const reelPick1 = ["shuga-20","naya-17","shuga-05","naya-11","shuga-21","naya-03","shuga-12","naya-20","shuga-06","naya-13","shuga-03"];
-const reelPick2 = ["naya-19","shuga-23","naya-02","shuga-18","naya-16","shuga-22","naya-22","shuga-14","naya-12","shuga-17"];
-function fillReel(el, ids) {
-  el.replaceChildren(...ids.map(id => thumb(byId[id])));
+// бесконечная лента: работы повторены трижды, в покое лента незаметно перескакивает в среднюю копию
+function makeLoop(el, list, size) {
+  const kids = [0, 1, 2].flatMap(c => list.map(w => {
+    const b = thumb(w, size);
+    if (c !== 1) { b.tabIndex = -1; b.setAttribute("aria-hidden", "true"); }   // копии не попадают в обход с клавиатуры
+    return b;
+  }));
+  el.replaceChildren(...kids);
+  const loop = { el, n: list.length, w: 0 };
+  const snap = el.classList.contains("car");
+  loop.jump = x => {                                 // без плавной прокрутки, иначе перескок будет виден
+    el.style.scrollBehavior = "auto";
+    el.scrollLeft = x;
+    el.style.scrollBehavior = "";
+  };
+  loop.measure = () => {
+    const x = el.scrollLeft, old = loop.w;
+    loop.w = el.children[loop.n].offsetLeft - el.children[0].offsetLeft;     // ширина одной копии
+    if (!old) loop.jump(loop.w);                     // старт с начала средней копии
+    else if (!snap) loop.jump(Math.round(x / (old / loop.n)) * (loop.w / loop.n));   // при смене ширины остаёмся на той же работе
+    // ленту с привязкой к кадрам браузер сам держит на той же работе
+    loop.wrap();
+  };
+  loop.wrap = () => {
+    const x = el.scrollLeft, w = loop.w;
+    if (!w) return;
+    if (x < w * 0.5) loop.jump(x + w);
+    else if (x > w * 1.5) loop.jump(x - w);
+  };
+  let idle = 0;
+  el.addEventListener("scroll", () => { clearTimeout(idle); idle = setTimeout(loop.wrap, 160); }, { passive: true });
+  const wrap = el.parentElement;
+  wrap.querySelector(".prev").addEventListener("click", () => el.scrollBy({ left: -el.clientWidth * 0.8, behavior: "smooth" }));
+  wrap.querySelector(".next").addEventListener("click", () => el.scrollBy({ left: el.clientWidth * 0.8, behavior: "smooth" }));
+  loop.measure();
+  return loop;
 }
-fillReel(document.getElementById("reel1"), reelPick1);
-fillReel(document.getElementById("reel2"), reelPick2);
+const loops = [];
 
-// ленты чуть смещаются вслед за прокруткой: медленно и с мягким догоном, чтобы не кружилась голова
-const reel = document.querySelector(".reel");
-const tracks = [...reel.querySelectorAll(".track")];
+// ленты на первом экране
+const reelPick = [
+  ["shuga-20","naya-17","shuga-05","naya-11","shuga-21","naya-03","shuga-12","naya-20","shuga-06","naya-13","shuga-03"],
+  ["naya-19","shuga-23","naya-02","shuga-18","naya-16","shuga-22","naya-22","shuga-14","naya-12","shuga-17"]
+];
+const reels = reelPick.map((ids, i) => makeLoop(document.getElementById(`reel${i + 1}`), ids.map(id => byId[id]), [240, 320]));
+loops.push(...reels);
+
+// при прокрутке страницы ленты слегка сдвигаются: верхняя влево, нижняя вправо.
+// Сдвиг добавляется к тому месту, где ленту оставили руками.
 const calm = matchMedia("(prefers-reduced-motion: reduce)");
-const SPEED = 0.18;                                  // на сколько пикселей сдвигается лента за пиксель прокрутки
-const EASE = 0.08;                                   // доля пути, которую лента проходит за кадр
-let travel = [], end = 1, cur = null, running = false;
-function measure() {                                 // размеры меняются только при смене ширины окна
-  const box = reel.getBoundingClientRect();
-  end = Math.max(1, box.top + scrollY + box.height); // прокрутка, при которой ленты уходят за верх экрана
-  const view = reel.clientWidth;
-  travel = tracks.map(t => Math.max(0, Math.min(t.scrollWidth - view, end * SPEED)));
-}
-function target() {
-  const p = Math.min(1, Math.max(0, scrollY / end));
-  return tracks.map((t, i) => i % 2 ? -travel[i] * (1 - p) : -travel[i] * p);
-}
+const SPEED = 0.18;                                  // пикселей сдвига на пиксель прокрутки
+const EASE = 0.1;                                    // доля оставшегося пути за кадр
+let lastY = scrollY, raf = 0, onScreen = true;
+const pos = reels.map(r => r.el.scrollLeft), push = reels.map(() => 0);
+new IntersectionObserver(es => { onScreen = es[0].isIntersecting; }).observe(document.querySelector(".reel"));
+reels.forEach((r, i) => r.el.addEventListener("scroll", () => {
+  if (Math.abs(r.el.scrollLeft - pos[i]) > 1.5) { pos[i] = r.el.scrollLeft; push[i] = 0; }   // ленту двигали руками
+}, { passive: true }));
 function step() {
-  const goal = target();                             // чтение
-  if (!cur) cur = goal.slice();
-  let moving = false;
-  tracks.forEach((t, i) => {                         // записи
-    const d = goal[i] - cur[i];
-    if (Math.abs(d) < 0.3) cur[i] = goal[i]; else { cur[i] += d * EASE; moving = true; }
-    t.style.transform = `translate3d(${cur[i].toFixed(1)}px, 0, 0)`;
+  raf = 0;
+  const y = scrollY, dy = y - lastY;                 // чтение
+  lastY = y;
+  if (!onScreen) { push.fill(0); return; }
+  let more = false;
+  reels.forEach((r, i) => {                          // записи
+    push[i] += dy * SPEED * (i % 2 ? -1 : 1);
+    if (!push[i]) return;
+    const d = Math.abs(push[i]) < 0.3 ? push[i] : push[i] * EASE;
+    push[i] -= d;
+    pos[i] += d;
+    if (pos[i] < r.w * 0.5) pos[i] += r.w; else if (pos[i] > r.w * 1.5) pos[i] -= r.w;
+    r.el.scrollLeft = pos[i];
+    if (push[i]) more = true;
   });
-  running = moving;
-  if (moving) requestAnimationFrame(step);
+  if (more) raf = requestAnimationFrame(step);
 }
-function kick() {
-  if (calm.matches || running) return;
-  running = true;
-  requestAnimationFrame(step);
-}
-addEventListener("scroll", kick, { passive: true });
-addEventListener("resize", () => { measure(); kick(); });
-measure();
-kick();
+addEventListener("scroll", () => {
+  if (calm.matches) { lastY = scrollY; return; }
+  if (!raf) raf = requestAnimationFrame(step);
+}, { passive: true });
+
+// ленты работ в карточках мастеров: сначала три выбранные работы, затем остальные
+document.querySelectorAll(".thumbs.car").forEach(car => {
+  const m = car.id.replace("car-", "");
+  const shown = [...car.querySelectorAll("[data-open]")].map(b => b.dataset.open);
+  const list = [...shown.map(id => byId[id]), ...ORDER[m].filter(w => !shown.includes(w.id))];
+  loops.push(makeLoop(car, list, [240, 240]));
+});
+
+addEventListener("resize", () => {
+  loops.forEach(l => l.measure());
+  reels.forEach((r, i) => { pos[i] = r.el.scrollLeft; });
+});
 
 // просмотр
 const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbCap = document.getElementById("lb-cap");
@@ -154,24 +194,4 @@ lb.addEventListener("touchend", e => {
   const dx = e.changedTouches[0].clientX - sx;
   if (Math.abs(dx) > 50) show(idx + (dx < 0 ? 1 : -1));
   sx = null;
-});
-
-// ленты работ в карточках мастеров
-document.querySelectorAll(".thumbs.car").forEach(car => {
-  const m = car.id.replace("car-", "");
-  const shown = [...car.querySelectorAll("[data-open]")].map(b => b.dataset.open);
-  car.append(...ORDER[m].filter(w => !shown.includes(w.id)).map(w => thumb(w, [240, 240])));
-  const wrap = car.closest(".car-wrap");
-  const prev = wrap.querySelector(".prev"), next = wrap.querySelector(".next");
-  let pending = false;
-  function sync() {                                  // сначала чтения, потом записи
-    pending = false;
-    const x = car.scrollLeft, max = car.scrollWidth - car.clientWidth;
-    prev.disabled = x <= 2;
-    next.disabled = x >= max - 2;
-  }
-  car.addEventListener("scroll", () => { if (!pending) { pending = true; requestAnimationFrame(sync); } }, { passive: true });
-  prev.addEventListener("click", () => car.scrollBy({ left: -car.clientWidth, behavior: "smooth" }));
-  next.addEventListener("click", () => car.scrollBy({ left: car.clientWidth, behavior: "smooth" }));
-  sync();
 });
