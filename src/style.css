@@ -16,16 +16,13 @@
   --veil-strong: rgba(7, 7, 7, .94);     /* фон окна просмотра */
   --stroke-soft: rgba(236, 230, 221, .55); /* контур цифр шагов */
   --display: "Unbounded", "Arial Black", system-ui, sans-serif;
-  --body: "Golos Text", "Segoe UI", system-ui, sans-serif;
+  --body: "SN Pro", "Segoe UI", system-ui, sans-serif;
   --gutter: max(16px, env(safe-area-inset-left, 0px));
   --gutter-r: max(16px, env(safe-area-inset-right, 0px));
   --wrap: 1320px;
   --tap: 44px;                           /* минимальная зона нажатия */
   color-scheme: dark;
 }
-/* примерка SN Pro (см. начало main.js) */
-.f-sn, .f-sn-all { --body: "SN Pro", "Golos Text", system-ui, sans-serif; }
-.f-sn-all { --display: "SN Pro", "Unbounded", system-ui, sans-serif; }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }   /* иначе display: grid у блока перебивает атрибут hidden */
 html { scroll-behavior: smooth; overscroll-behavior-x: none; }
