@@ -33,11 +33,12 @@ function thumb(w, size = [240, 320]) {
 }
 
 
-// бесконечная лента: работы повторены трижды, в покое лента незаметно перескакивает в среднюю копию
+// бесконечная лента: работы повторены пять раз, в покое лента незаметно перескакивает в среднюю копию.
+// По две копии с каждой стороны — запас, чтобы и долгий свайп не упёрся в край
 function makeLoop(el, list, size) {
-  const kids = [0, 1, 2].flatMap(c => list.map(w => {
+  const kids = [0, 1, 2, 3, 4].flatMap(c => list.map(w => {
     const b = thumb(w, size);
-    if (c !== 1) { b.tabIndex = -1; b.setAttribute("aria-hidden", "true"); }   // копии не попадают в обход с клавиатуры
+    if (c !== 2) { b.tabIndex = -1; b.setAttribute("aria-hidden", "true"); }   // копии не попадают в обход с клавиатуры
     return b;
   }));
   el.replaceChildren(...kids);
@@ -51,7 +52,7 @@ function makeLoop(el, list, size) {
   loop.measure = () => {
     const x = el.scrollLeft, old = loop.w;
     loop.w = el.children[loop.n].offsetLeft - el.children[0].offsetLeft;     // ширина одной копии
-    if (!old) loop.jump(loop.w);                     // старт с начала средней копии
+    if (!old) loop.jump(2 * loop.w);                 // старт с начала средней копии
     else if (!snap) loop.jump(Math.round(x / (old / loop.n)) * (loop.w / loop.n));   // при смене ширины остаёмся на той же работе
     // ленту с привязкой к кадрам браузер сам держит на той же работе
     loop.wrap();
@@ -59,8 +60,8 @@ function makeLoop(el, list, size) {
   loop.wrap = () => {
     const x = el.scrollLeft, w = loop.w;
     if (!w) return;
-    if (x < w * 0.5) loop.jump(x + w);
-    else if (x > w * 1.5) loop.jump(x - w);
+    if (x < w * 1.5) loop.jump(x + w);
+    else if (x > w * 2.5) loop.jump(x - w);
   };
   let idle = 0;
   el.addEventListener("scroll", () => { clearTimeout(idle); idle = setTimeout(loop.wrap, 160); }, { passive: true });
@@ -103,7 +104,7 @@ function step() {
     const d = Math.abs(push[i]) < 0.3 ? push[i] : push[i] * EASE;
     push[i] -= d;
     pos[i] += d;
-    if (pos[i] < r.w * 0.5) pos[i] += r.w; else if (pos[i] > r.w * 1.5) pos[i] -= r.w;
+    if (pos[i] < r.w * 1.5) pos[i] += r.w; else if (pos[i] > r.w * 2.5) pos[i] -= r.w;
     r.el.scrollLeft = pos[i];
     if (push[i]) more = true;
   });

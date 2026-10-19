@@ -147,8 +147,8 @@ header.top {
 @media (min-width: 861px) { .tiger { top: 50%; right: -10%; transform: translateY(-50%); width: min(1150px, 78vw); } }
 
 /* Ленты работ на первом экране: листаются вручную и слегка сдвигаются при прокрутке страницы */
-.reel { display: grid; gap: 10px; padding-block: 8px 0; }
-.reel-row { position: relative; }
+.reel { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; padding-block: 8px 0; }
+.reel-row { position: relative; min-width: 0; }   /* иначе лента распирает страницу шириной своих работ */
 .track {
   display: flex; gap: 10px;
   overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch;
@@ -166,14 +166,17 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 /* Мастера: на телефоне фото над текстом, с 601px фото слева от работ, с 1101px мастера рядом */
 .masters { display: grid; grid-template-columns: 1fr; gap: clamp(40px, 5vw, 56px); align-items: start; }
 @media (min-width: 1101px) { .masters { grid-template-columns: 1fr 1fr; } }
-.master { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px 20px; align-items: start; min-width: 0; }
+.master {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px 20px; align-items: start; min-width: 0;
+  padding: clamp(14px, 2vw, 22px); border: 1px solid var(--graphite); border-radius: 16px;   /* у каждого мастера своя рамка */
+}
 .master-info { display: grid; gap: 14px; min-width: 0; }
 @media (min-width: 601px) {
   .master { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
   .master-contacts { grid-column: 1 / -1; }
 }
 .master-photo { position: relative; container-type: inline-size; }
-.master-photo img { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: 50% 25%; }
+.master-photo img { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: 50% 25%; border-radius: 8px; }
 @media (min-width: 601px) { .master-photo img { aspect-ratio: 4 / 5; } }
 /* псевдоним в «негативе»: инвертирует фото под собой и наполовину выходит под кадр, на тёмный фон */
 .master-name {
@@ -194,6 +197,9 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .contacts { display: flex; flex-wrap: wrap; gap: 8px; }
 .contacts .btn { gap: 8px; padding: 11px 16px 11px 13px; font-size: 14px; }
 .contacts .btn .ic { font-size: 18px; }
+.master-contacts .contacts { gap: 6px; }
+.master-contacts .btn { gap: 6px; padding: 10px 12px 10px 10px; font-size: 13px; }
+.master-contacts .btn .ic { font-size: 16px; }
 .btn.mail { text-transform: none; }    /* адрес почты пишется как есть */
 .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .thumbs button { padding: 0; border: 0; background: var(--wall); cursor: zoom-in; }
@@ -204,7 +210,7 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 /* лента работ в карточке: свайп на телефоне, колесо и стрелки на компьютере; справа выглядывает следующая работа */
 .car-wrap { position: relative; min-width: 0; container-type: inline-size; }
 .thumbs.car {
-  grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: calc((100% - 8px) / 1.35);
+  grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: calc((100% - 16px) / 2.4);   /* видно ~2,5 работы: понятно, что это лента */
   overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-behavior: smooth;
   scrollbar-width: none; -webkit-overflow-scrolling: touch;
 }
@@ -213,8 +219,7 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .thumbs.car img { aspect-ratio: 4 / 5; }
 @media (min-width: 601px) { .thumbs.car img { aspect-ratio: 1; } }
 /* сколько работ видно, зависит от ширины самой ленты, а не окна */
-@container (min-width: 420px) { .thumbs.car { grid-auto-columns: calc((100% - 16px) / 2.25); } }
-@container (min-width: 600px) { .thumbs.car { grid-auto-columns: calc((100% - 16px) / 3.25); } }
+@container (min-width: 600px) { .thumbs.car { grid-auto-columns: calc((100% - 24px) / 3.5); } }
 @media (prefers-reduced-motion: reduce) { .thumbs.car { scroll-behavior: auto; } }
 .car-btn { display: none; }
 @media (hover: hover) and (pointer: fine) {
@@ -300,27 +305,33 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
   .steps p { font-size: 16px; line-height: 1.6; }
 }
 @media (min-width: 901px) {
-  .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .steps { grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr)); }   /* первый шаг шире: в нём кнопки студии */
   .steps li { padding-bottom: 0; }
   .steps li:nth-child(3) { padding-left: 28px; border-left: 1px solid var(--graphite); }
 }
 
-/* Как записаться: связь идёт первой, сразу под заголовком */
-.reach { display: grid; gap: 18px; }
-.reach .lead a { color: var(--skin); }
+/* Шаг «Запись»: мастеру напрямую, а кнопки студии — в своей рамке с подписью */
+.steps .step-body { display: grid; gap: 14px; color: var(--ash); }
+.steps .step-body a:not(.btn) { color: var(--skin); }
+.studio-reach { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--graphite); border-radius: 12px; }
+.steps .studio-reach-title { color: var(--skin); font-size: 14px; line-height: 1.4; }
+.studio-reach .contacts { gap: 6px; }
+.studio-reach .btn { gap: 6px; padding: 10px 12px 10px 10px; font-size: 13px; }
+.studio-reach .btn .ic { font-size: 16px; }
 
-/* Адрес в разделе «Студия» */
+/* Адрес в разделе «Студия»: слева под заголовком, справа «по записи» и карты */
+.studio-head h2 { margin-bottom: 18px; }
+.studio-visit .contacts { margin-top: 14px; }
+.addr-note a { color: var(--skin); }
 .addr-block { min-width: 0; }
 .addr { font: 700 clamp(18px, 5.6vw, 22px)/1.2 var(--display); letter-spacing: -0.01em; overflow-wrap: break-word; }
 .addr-floor { color: var(--ash); font-weight: 400; }
 .addr-sub { color: var(--ash); font-size: 15px; line-height: 1.45; margin-top: 8px; max-width: 40em; }
-.addr-note { color: var(--ash); margin-top: 10px; }
-.addr-block .contacts { margin-top: 18px; }
+.addr-note { color: var(--ash); }
 
-/* Отзывы: виджет Яндекс Карт работает при ширине 300–760px и высоте от 500px */
+/* Отзывы: виджет Яндекс Карт на всю ширину; инверсия в атрибуте style делает его тёмным */
 #reviews { padding-top: 0; }
-.reviews { display: grid; gap: 16px; justify-items: start; min-width: 0; }
-.reviews-widget { width: 100%; max-width: 760px; height: 560px; border: 1px solid var(--graphite); border-radius: 8px; overflow: hidden; background: var(--wall); }
+.reviews-widget { width: 100%; height: 560px; border: 1px solid var(--graphite); border-radius: 8px; overflow: hidden; background: var(--wall); }
 @media (min-width: 861px) { .reviews-widget { height: 640px; } }
 .reviews-widget iframe { display: block; width: 100%; height: 100%; border: 0; }
 
