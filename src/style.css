@@ -159,7 +159,9 @@ header.top {
 .track button:hover img { filter: none; }
 @media (prefers-reduced-motion: reduce) { .logo-ink { animation: none; } }
 
-section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
+section { padding-block: clamp(64px, 8vw, 112px); scroll-margin-top: 64px; }
+/* соседние разделы на одном фоне не складывают отступы вдвое */
+#faq, #reviews { padding-top: 0; }
 .sec-head { display: grid; grid-template-columns: 1fr; gap: 24px 48px; align-items: end; margin-bottom: clamp(36px, 5vw, 64px); }
 @media (min-width: 861px) { .sec-head { grid-template-columns: 1fr minmax(0, 30em); } }
 
@@ -188,7 +190,7 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
   mix-blend-mode: difference;
   pointer-events: none;
 }
-.master-photo::after { content: ""; display: block; height: calc(clamp(30px, 18cqi, 64px) * 0.34); }   /* место под вылет имени */
+.master-photo::after { content: ""; display: block; height: calc(clamp(30px, 18cqi, 64px) * 0.34 + 6px); }   /* место под вылет имени */
 .master-meta { color: var(--ash); font-size: 15px; }
 .master-meta strong { color: var(--skin); font-weight: 600; }
 .master-contacts { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; padding-top: 16px; border-top: 1px solid var(--graphite); }
@@ -217,7 +219,6 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .thumbs.car::-webkit-scrollbar { display: none; }
 .thumbs.car > button { scroll-snap-align: start; }
 .thumbs.car img { aspect-ratio: 4 / 5; }
-@media (min-width: 601px) { .thumbs.car img { aspect-ratio: 1; } }
 /* сколько работ видно, зависит от ширины самой ленты, а не окна */
 @container (min-width: 600px) { .thumbs.car { grid-auto-columns: calc((100% - 24px) / 3.5); } }
 @media (prefers-reduced-motion: reduce) { .thumbs.car { scroll-behavior: auto; } }
@@ -288,36 +289,43 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 
 /* Как записаться: шаги — на телефоне цифра слева от текста, с 521px две колонки, с 901px четыре */
 .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--graphite); }
-.steps li { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 4px 14px; align-content: start; padding: 18px 0; border-top: 1px solid var(--graphite); }
-.steps li:first-child { border-top: 0; }
+.steps > li { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 4px 14px; align-content: start; padding: 18px 0; border-top: 1px solid var(--graphite); }
+.steps > li:first-child { border-top: 0; }
 .steps .n { grid-row: span 2; font: 900 36px/1 var(--display); color: transparent; -webkit-text-stroke: 1.5px var(--stroke-soft); }
 .steps h3, .perks h3, .safety h3 { font-size: 20px; line-height: 1.1; }   /* заголовки пунктов: шаги и преимущества */
 .steps h3 { align-self: end; }
 .steps p { color: var(--ash); font-size: 15px; line-height: 1.5; }
 @media (min-width: 521px) {
   .steps { grid-template-columns: 1fr 1fr; }
-  .steps li { grid-template-columns: none; gap: 12px; padding: 28px 28px 28px 0; border-top: 0; }
-  .steps li + li { padding-left: 28px; border-left: 1px solid var(--graphite); }
-  .steps li:nth-child(3) { padding-left: 0; border-left: 0; }
+  .steps > li { grid-template-columns: none; gap: 12px; padding: 28px 28px 28px 0; border-top: 0; }
+  .steps > li + li { padding-left: 28px; border-left: 1px solid var(--graphite); }
+  .steps > li:nth-child(3) { padding-left: 0; border-left: 0; }
   .steps .n { grid-row: auto; font-size: 64px; }
   .steps h3, .perks h3, .safety h3 { font-size: 22px; }
   .steps h3 { align-self: auto; }
   .steps p { font-size: 16px; line-height: 1.6; }
 }
 @media (min-width: 901px) {
-  .steps { grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr)); }   /* первый шаг шире: в нём кнопки студии */
-  .steps li { padding-bottom: 0; }
-  .steps li:nth-child(3) { padding-left: 28px; border-left: 1px solid var(--graphite); }
+  .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .steps > li { padding-bottom: 0; }
+  .steps > li:nth-child(3) { padding-left: 28px; border-left: 1px solid var(--graphite); }
 }
 
-/* Шаг «Запись»: мастеру напрямую, а кнопки студии — в своей рамке с подписью */
-.steps .step-body { display: grid; gap: 14px; color: var(--ash); }
+/* Шаг «Запись»: мастеру напрямую, ниже — контакты студии простым списком, в одном ритме с текстом соседних шагов */
+.steps .step-body { display: grid; gap: 10px; align-content: start; }
 .steps .step-body a:not(.btn) { color: var(--skin); }
-.studio-reach { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--graphite); border-radius: 12px; }
-.steps .studio-reach-title { color: var(--skin); font-size: 14px; line-height: 1.4; }
-.studio-reach .contacts { gap: 6px; }
-.studio-reach .btn { gap: 6px; padding: 10px 12px 10px 10px; font-size: 13px; }
-.studio-reach .btn .ic { font-size: 16px; }
+.steps .reach-q { color: var(--skin); margin-top: 4px; }
+.reach-links { list-style: none; padding: 0; margin: 0; display: grid; }
+.reach-links a {
+  display: flex; align-items: center; gap: 10px; min-height: var(--tap);
+  border-top: 1px solid var(--graphite); text-decoration: none; color: var(--skin); font-size: 15px;
+  transition: color .2s;
+}
+.reach-links li:last-child a { border-bottom: 1px solid var(--graphite); }
+.reach-links .ic { font-size: 18px; color: var(--ash); transition: color .2s; }
+.reach-links span { text-transform: lowercase; }
+.reach-links li:last-child span { text-transform: none; }    /* адрес почты как есть */
+.reach-links a:hover, .reach-links a:hover .ic { color: var(--wine-hi); }
 
 /* Адрес в разделе «Студия»: слева под заголовком, справа «по записи» и карты */
 .studio-head h2 { margin-bottom: 18px; }
@@ -329,9 +337,10 @@ section { padding-block: clamp(72px, 10vw, 140px); scroll-margin-top: 64px; }
 .addr-sub { color: var(--ash); font-size: 15px; line-height: 1.45; margin-top: 8px; max-width: 40em; }
 .addr-note { color: var(--ash); }
 
-/* Отзывы: виджет Яндекс Карт на всю ширину; инверсия в атрибуте style делает его тёмным */
-#reviews { padding-top: 0; }
-.reviews-widget { width: 100%; height: 560px; border: 1px solid var(--graphite); border-radius: 8px; overflow: hidden; background: var(--wall); }
+/* Отзывы: заголовок слева, виджет справа, как в «Вопросах». Виджет Яндекса работает до 760px — колонка не шире.
+   Инверсия в атрибуте style делает его тёмным */
+@media (min-width: 1101px) { .reviews-split { grid-template-columns: minmax(0, 1fr) 760px; } }
+.reviews-widget { width: 100%; max-width: 760px; height: 560px; border: 1px solid var(--graphite); border-radius: 8px; overflow: hidden; background: var(--wall); }
 @media (min-width: 861px) { .reviews-widget { height: 640px; } }
 .reviews-widget iframe { display: block; width: 100%; height: 100%; border: 0; }
 
