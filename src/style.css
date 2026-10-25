@@ -483,9 +483,7 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
 .gift-steps h3 { font-size: 20px; line-height: 1.1; }
 .gift-steps p { color: var(--ash); line-height: 1.5; }
 @media (min-width: 861px) { .gift-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } .gift-steps li { grid-template-columns: none; } .gift-steps li::before { grid-row: auto; font-size: 44px; margin-bottom: 8px; } }
-.terms { margin: 0; display: grid; border-top: 1px solid var(--graphite); max-width: 52em; }
-.terms > div { display: grid; grid-template-columns: 1fr; gap: 2px 24px; padding-block: 14px; border-bottom: 1px solid var(--graphite); }
-.terms dt { font-weight: 600; text-transform: lowercase; }
-.terms dd { margin: 0; color: var(--ash); }
-@media (min-width: 601px) { .terms > div { grid-template-columns: minmax(0, 14em) minmax(0, 1fr); } }
 .gift .ask-studio { margin-top: 16px; }
+.gift .gift-how { margin-top: 0; }
+.gift .gift-faq { max-width: none; }
+.gift .split h2 { margin-bottom: 0; }
