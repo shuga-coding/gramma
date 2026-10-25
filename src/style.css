@@ -199,11 +199,6 @@ section { padding-block: clamp(64px, 8vw, 112px); scroll-margin-top: 64px; }
 .contacts { display: flex; flex-wrap: wrap; gap: 8px; }
 .contacts .btn { gap: 8px; padding: 11px 16px 11px 13px; font-size: 14px; }
 .contacts .btn .ic { font-size: 18px; }
-/* тихая ссылка на сертификат мастера: заметна, но не спорит с кнопками связи */
-.cert-link { justify-self: start; display: inline-flex; align-items: center; gap: 8px; min-height: var(--tap); color: var(--skin); font-size: 14px; text-decoration: none; text-transform: lowercase; }
-.cert-link span { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--edge); }
-.cert-link .ic { font-size: 18px; color: var(--wine-hi); }
-.cert-link:hover span { text-decoration-color: var(--skin); }
 .master-contacts .contacts { gap: 6px; }
 .master-contacts .btn { gap: 6px; padding: 10px 12px 10px 10px; font-size: 13px; }
 .master-contacts .btn .ic { font-size: 16px; }
