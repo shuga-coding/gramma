@@ -190,7 +190,7 @@ section { padding-block: clamp(64px, 8vw, 112px); scroll-margin-top: 64px; }
   mix-blend-mode: difference;
   pointer-events: none;
 }
-.master-photo::after { content: ""; display: block; height: calc(clamp(30px, 18cqi, 64px) * 0.34 + 6px); }   /* место под вылет имени */
+.master-photo::after { content: ""; display: block; height: calc(clamp(30px, 18cqi, 64px) * 0.24 + 6px); }   /* место под вылет имени: примерно треть букв ниже фото, две трети — на фото в «негативе» */
 .master-meta { color: var(--ash); font-size: 15px; }
 .master-meta strong { color: var(--skin); font-weight: 600; }
 .master-contacts { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 12px 14px; padding-top: 16px; border-top: 1px solid var(--graphite); }
