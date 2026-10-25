@@ -346,9 +346,10 @@ section { padding-block: clamp(64px, 8vw, 112px); scroll-margin-top: 64px; }
 .addr-sub { color: var(--ash); font-size: 15px; line-height: 1.45; margin-top: 8px; max-width: 40em; }
 .addr-note { color: var(--ash); }
 
-/* Отзывы: заголовок слева, виджет справа — та же сетка и ширина, что у «Вопросов».
+/* Отзывы: заголовок слева, виджет справа, как в «Вопросах». Виджет Яндекса работает до 760px — колонка не шире.
    Инверсия в атрибуте style делает его тёмным */
-.reviews-widget { width: 100%; height: 560px; border: 1px solid var(--graphite); border-radius: 8px; overflow: hidden; background: var(--wall); }
+@media (min-width: 1101px) { .reviews-split { grid-template-columns: minmax(0, 1fr) 760px; } }
+.reviews-widget { width: 100%; max-width: 760px; height: 560px; border: 1px solid var(--graphite); border-radius: 8px; overflow: hidden; background: var(--wall); }
 @media (min-width: 861px) { .reviews-widget { height: 640px; } }
 .reviews-widget iframe { display: block; width: 100%; height: 100%; border: 0; }
 
