@@ -27,7 +27,6 @@
   --edge: #6b665f;                       /* обводка кнопок и полей: контраст от 3:1 к ink и wall */
   --veil: rgba(7, 7, 7, .82);            /* фон закреплённой шапки */
   --veil-strong: rgba(7, 7, 7, .94);     /* фон окна просмотра */
-  --ok: #86c995;                         /* «нормально» в памятке: контраст к ink выше 4,5:1 */
   --stroke-soft: rgba(236, 230, 221, .55); /* контур цифр шагов */
   --display: "Unbounded", "Arial Black", system-ui, sans-serif;
   --body: "SN Pro", "Segoe UI", system-ui, sans-serif;
@@ -427,12 +426,14 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
 .dont li::before { content: ""; position: absolute; left: 0; top: .6em; width: 8px; height: 8px; border-radius: 50%; background: var(--wine-hi); }
 .two { display: grid; grid-template-columns: 1fr; gap: 16px; }
 @media (min-width: 761px) { .two { grid-template-columns: 1fr 1fr; } }
-.state { display: grid; gap: 10px; align-content: start; padding: clamp(18px, 2.4vw, 24px); border: 1px solid var(--graphite); border-radius: 16px; }
-.state h3 { display: flex; align-items: center; gap: 10px; font-size: 20px; line-height: 1.1; }
-.state .ic { font-size: 22px; flex: none; }
-.state.ok .ic { color: var(--ok); }
-.state.warn .ic { color: var(--wine-hi); }
-.state p { color: var(--ash); line-height: 1.5; }
+.ask-lead { color: var(--ash); max-width: 46em; margin: -8px 0 20px; }
+.ask-card { display: grid; gap: 14px; align-content: start; padding: clamp(18px, 2.4vw, 24px); border: 1px solid var(--graphite); border-radius: 16px; }
+.ask-card h3 { font-size: 20px; line-height: 1.1; text-transform: none; }   /* имена с большой буквы */
+.ask-card .contacts { gap: 6px; }
+.ask-card .btn { gap: 6px; padding: 10px 12px 10px 10px; font-size: 13px; }
+.ask-card .btn .ic { font-size: 16px; }
+.ask-studio { color: var(--ash); margin-top: 16px; }
+.ask-studio a { color: var(--skin); text-underline-offset: 3px; }
 .guide-end { display: grid; gap: 12px; padding-top: 28px; border-top: 1px solid var(--graphite); }
 .guide-end p { color: var(--ash); max-width: 46em; }
 .guide-end a:not(.btn) { color: var(--skin); text-underline-offset: 3px; }
