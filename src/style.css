@@ -353,13 +353,23 @@ section { padding-block: clamp(64px, 8vw, 112px); scroll-margin-top: 64px; }
 @media (min-width: 861px) { .reviews-widget { height: 640px; } }
 .reviews-widget iframe { display: block; width: 100%; height: 100%; border: 0; }
 
+/* Подвал: на телефоне столбиком (знак и копирайт, политика, сноска), с 761px политика в строку с копирайтом, адрес сайта справа */
 footer { border-top: 1px solid var(--graphite); color: var(--ash); font-size: 13px; }
-footer .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; padding-block: 16px; }
+footer .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding-block: 18px calc(18px + env(safe-area-inset-bottom, 0px)); }
 footer img { width: 24px; filter: invert(1); opacity: .6; }
-footer .site { margin-left: auto; }
-footer .legal { flex-basis: 100%; font-size: 12px; }
-footer .legal-link { color: var(--ash); text-decoration: underline; text-underline-offset: 2px; }
-footer .legal-link:hover { color: var(--skin); }
+footer .site { display: none; }
+footer .legal { flex-basis: 100%; font-size: 12px; line-height: 1.5; }
+footer .legal-link {
+  display: inline-flex; align-items: center; min-height: var(--tap);   /* мелкая, но удобная для пальца */
+  color: var(--ash); text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--edge);
+}
+footer .legal-link:hover { color: var(--skin); text-decoration-color: var(--skin); }
+@media (min-width: 761px) {
+  footer .wrap { gap: 6px 20px; }
+  footer .legal-link { flex-basis: auto; order: 3; }
+  footer .site { display: block; order: 4; margin-left: auto; }
+  footer p.legal { order: 5; }
+}
 
 /* Просмотр работы: на телефоне стрелки внизу, с 601px по бокам */
 dialog.lb {
