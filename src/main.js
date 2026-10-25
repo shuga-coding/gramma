@@ -53,7 +53,7 @@ function makeLoop(el, list, size) {
     const x = el.scrollLeft, old = loop.w;
     loop.w = el.children[loop.n].offsetLeft - el.children[0].offsetLeft;     // ширина одной копии
     if (!old) loop.jump(2 * loop.w);                 // старт с начала средней копии
-    else if (!snap) loop.jump(Math.round(x / (old / loop.n)) * (loop.w / loop.n));   // при смене ширины остаёмся на той же работе
+    else if (!snap && old !== loop.w) loop.jump(x * loop.w / old);   // при смене ширины остаёмся на том же месте, без подравнивания к кадру
     // ленту с привязкой к кадрам браузер сам держит на той же работе
     loop.wrap();
   };
@@ -88,9 +88,14 @@ const SPEED = 0.18;                                  // пикселей сдв�
 const EASE = 0.1;                                    // доля оставшегося пути за кадр
 let lastY = scrollY, raf = 0, onScreen = true;
 const pos = reels.map(r => r.el.scrollLeft), push = reels.map(() => 0);
+const handsOff = reels.map(() => 0);                 // до какого момента ленту не трогаем: её листают руками или она катится по инерции
 new IntersectionObserver(es => { onScreen = es[0].isIntersecting; }).observe(document.querySelector(".reel"));
 reels.forEach((r, i) => r.el.addEventListener("scroll", () => {
-  if (Math.abs(r.el.scrollLeft - pos[i]) > 1.5) { pos[i] = r.el.scrollLeft; push[i] = 0; }   // ленту двигали руками
+  if (Math.abs(r.el.scrollLeft - pos[i]) > 1.5) {   // ленту двигали руками (или она едет по инерции после свайпа)
+    pos[i] = r.el.scrollLeft;
+    push[i] = 0;
+    handsOff[i] = performance.now() + 350;
+  }
 }, { passive: true }));
 function step() {
   raf = 0;
@@ -98,7 +103,9 @@ function step() {
   lastY = y;
   if (!onScreen) { push.fill(0); return; }
   let more = false;
+  const now = performance.now();
   reels.forEach((r, i) => {                          // записи
+    if (now < handsOff[i]) { push[i] = 0; return; }  // не спорим с пальцем и инерцией: иначе лента дёргается
     push[i] += dy * SPEED * (i % 2 ? -1 : 1);
     if (!push[i]) return;
     const d = Math.abs(push[i]) < 0.3 ? push[i] : push[i] * EASE;
@@ -123,7 +130,12 @@ document.querySelectorAll(".thumbs.car").forEach(car => {
   loops.push(makeLoop(car, list, [240, 240]));
 });
 
+// на Android адресная строка прячется при прокрутке и меняет высоту окна — это тоже событие resize.
+// Ленты зависят только от ширины, поэтому пересчитываем их лишь при смене ширины.
+let lastW = innerWidth;
 addEventListener("resize", () => {
+  if (innerWidth === lastW) return;
+  lastW = innerWidth;
   loops.forEach(l => l.measure());
   reels.forEach((r, i) => { pos[i] = r.el.scrollLeft; });
 });
