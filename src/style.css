@@ -503,9 +503,9 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
 }
 .gift .gift-masters { max-width: none; }
 @media (min-width: 861px) {
-  .gift-card { grid-template-columns: 1fr; align-items: start; padding: 16px; }
-  .gift-card img { width: 100%; aspect-ratio: 3 / 2; }
-  .gift-card-body { padding: 4px 4px 4px; }
+  .gift-card { grid-template-columns: 220px minmax(0, 1fr); gap: 24px; padding: 16px; }   /* портрет целиком, без обрезки головы */
+  .gift-card img { width: 220px; }
+  .gift-card h3 { font-size: 24px; }
   .gift-steps { grid-template-rows: auto auto auto; }
   .gift-steps li { grid-row: span 3; grid-template-rows: subgrid; row-gap: 8px; }   /* заголовки и тексты шагов на одной высоте */
   .gift-steps li::before { margin-bottom: 0; }
