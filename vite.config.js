@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { resolve } from 'node:path';
 
 // Vite сам минифицирует стили и скрипт, но не HTML.
 // Этот маленький плагин при сборке убирает из index.html комментарии и лишние пробелы.
@@ -24,6 +25,13 @@ export default defineConfig({
     outDir: 'dist',
     // картинки лежат в public/img и копируются как есть; встраивать их в код не нужно
     assetsInlineLimit: 0,
+    // две страницы: главная и памятка по уходу (gramma.tattoo/guide/)
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        guide: resolve(__dirname, 'guide/index.html'),
+      },
+    },
   },
   plugins: [minifyHtml()],
 });
