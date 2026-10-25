@@ -193,7 +193,7 @@ section { padding-block: clamp(64px, 8vw, 112px); scroll-margin-top: 64px; }
 .master-photo::after { content: ""; display: block; height: calc(clamp(30px, 18cqi, 64px) * 0.34 + 6px); }   /* место под вылет имени */
 .master-meta { color: var(--ash); font-size: 15px; }
 .master-meta strong { color: var(--skin); font-weight: 600; }
-.master-contacts { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; padding-top: 16px; border-top: 1px solid var(--graphite); }
+.master-contacts { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 12px 14px; padding-top: 16px; border-top: 1px solid var(--graphite); }
 .contacts-label { color: var(--ash); font-size: 14px; text-transform: lowercase; }
 /* кнопки соцсетей: значок слева от названия */
 .contacts { display: flex; flex-wrap: wrap; gap: 8px; }
