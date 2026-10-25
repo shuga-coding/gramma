@@ -199,9 +199,11 @@ section { padding-block: clamp(64px, 8vw, 112px); scroll-margin-top: 64px; }
 .contacts { display: flex; flex-wrap: wrap; gap: 8px; }
 .contacts .btn { gap: 8px; padding: 11px 16px 11px 13px; font-size: 14px; }
 .contacts .btn .ic { font-size: 18px; }
-.master-info .cert { justify-self: start; gap: 8px; padding: 11px 16px 11px 13px; font-size: 14px; }   /* подарочный сертификат мастера */
-.master-info .cert .ic { font-size: 18px; color: var(--wine-hi); }
-.master-info .cert:hover .ic { color: var(--ink); }
+/* тихая ссылка на сертификат мастера: заметна, но не спорит с кнопками связи */
+.cert-link { justify-self: start; display: inline-flex; align-items: center; gap: 8px; min-height: var(--tap); color: var(--skin); font-size: 14px; text-decoration: none; text-transform: lowercase; }
+.cert-link span { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--edge); }
+.cert-link .ic { font-size: 18px; color: var(--wine-hi); }
+.cert-link:hover span { text-decoration-color: var(--skin); }
 .master-contacts .contacts { gap: 6px; }
 .master-contacts .btn { gap: 6px; padding: 10px 12px 10px 10px; font-size: 13px; }
 .master-contacts .btn .ic { font-size: 16px; }
@@ -451,3 +453,39 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
 .guide-end p { color: var(--ash); max-width: 46em; }
 .guide-end a:not(.btn) { color: var(--skin); text-underline-offset: 3px; }
 .guide-end .contacts { margin-top: 8px; }
+
+/* ===== Подарочный сертификат: полоса на главной и страница /gift/ ===== */
+.gift-band {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px 16px; align-items: center;
+  margin-top: clamp(24px, 3vw, 40px); padding: clamp(18px, 2.4vw, 24px);
+  border: 1px solid var(--wine); border-radius: 16px; background: var(--wall);
+}
+.gift-band > .ic { font-size: 30px; color: var(--wine-hi); }
+.gift-band-title { font: 900 20px/1.1 var(--display); text-transform: lowercase; margin-bottom: 4px; }
+.gift-band-text p:not(.gift-band-title) { color: var(--ash); font-size: 15px; }
+.gift-band .btn { grid-column: 1 / -1; justify-self: start; }
+@media (min-width: 761px) {
+  .gift-band { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .gift-band .btn { grid-column: auto; }
+}
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.gift-card { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 16px; align-items: center; padding: 14px; border: 1px solid var(--graphite); border-radius: 16px; }
+.gift-card img { width: 112px; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 25%; border-radius: 10px; }
+.gift-card-body { display: grid; gap: 8px; justify-items: start; min-width: 0; }
+.gift-card h3 { font-size: 20px; line-height: 1.1; text-transform: none; }
+.gift-tags { color: var(--ash); font-size: 14px; line-height: 1.4; }
+.gift-card .btn { margin-top: 4px; gap: 8px; padding: 11px 16px 11px 13px; font-size: 14px; }
+.gift-card .btn .ic { font-size: 18px; }
+@media (min-width: 521px) { .gift-card { grid-template-columns: 150px minmax(0, 1fr); } .gift-card img { width: 150px; } }
+.gift-steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 0 24px; counter-reset: g; }
+.gift-steps li { counter-increment: g; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 4px 12px; padding-block: 16px; border-top: 1px solid var(--graphite); }
+.gift-steps li::before { content: "0" counter(g); grid-row: span 2; font: 900 30px/1 var(--display); color: transparent; -webkit-text-stroke: 1.2px var(--stroke-soft); }
+.gift-steps h3 { font-size: 20px; line-height: 1.1; }
+.gift-steps p { color: var(--ash); line-height: 1.5; }
+@media (min-width: 861px) { .gift-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } .gift-steps li { grid-template-columns: none; } .gift-steps li::before { grid-row: auto; font-size: 44px; margin-bottom: 8px; } }
+.terms { margin: 0; display: grid; border-top: 1px solid var(--graphite); max-width: 52em; }
+.terms > div { display: grid; grid-template-columns: 1fr; gap: 2px 24px; padding-block: 14px; border-bottom: 1px solid var(--graphite); }
+.terms dt { font-weight: 600; text-transform: lowercase; }
+.terms dd { margin: 0; color: var(--ash); }
+@media (min-width: 601px) { .terms > div { grid-template-columns: minmax(0, 14em) minmax(0, 1fr); } }
+.gift .ask-studio { margin-top: 16px; }

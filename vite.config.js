@@ -25,11 +25,12 @@ export default defineConfig({
     outDir: 'dist',
     // картинки лежат в public/img и копируются как есть; встраивать их в код не нужно
     assetsInlineLimit: 0,
-    // две страницы: главная и памятка по уходу (gramma.tattoo/guide/)
+    // страницы: главная, памятка по уходу (/guide/) и подарочный сертификат (/gift/)
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
         guide: resolve(__dirname, 'guide/index.html'),
+        gift: resolve(__dirname, 'gift/index.html'),
       },
     },
   },

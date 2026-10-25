@@ -5,6 +5,7 @@
 ## Структура
 
 - `index.html` — главная страница;
+- `gift/index.html` — подарочный сертификат (gramma.tattoo/gift/), кнопки ведут на Certic;
 - `guide/index.html` — памятка по уходу после сеанса (gramma.tattoo/guide/), стили общие;
 - `public/docs/` — PDF: политика обработки ПД и документ о противопоказаниях и подготовке;
 - `public/robots.txt`, `public/sitemap.xml` — для поисковиков (при новой странице добавить её в sitemap);
