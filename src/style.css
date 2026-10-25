@@ -487,3 +487,27 @@ dialog.lb::backdrop { background: var(--ink); opacity: .6; }
 .gift .gift-how { margin-top: 0; }
 .gift .gift-faq { max-width: none; }
 .gift .split h2 { margin-bottom: 0; }
+
+/* сертификат: картинка рядом с заголовком, карточки мастеров во всю ширину, шаги выровнены */
+.gift-head { max-width: none; display: grid; grid-template-columns: 1fr; gap: 24px 48px; align-items: center; }
+.gift-head-text { max-width: 40em; }
+.gift-cert { margin: 0; }
+.gift-cert img { width: 100%; border-radius: 12px; border: 1px solid var(--graphite); box-shadow: 0 24px 60px rgba(0, 0, 0, .55); }
+@media (min-width: 861px) {
+  .gift-head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .gift-cert img { transform: rotate(-2deg); }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 861px) {
+  .gift-cert img { transition: transform .4s cubic-bezier(.2,.7,.2,1); }
+  .gift-cert:hover img { transform: rotate(0); }
+}
+.gift .gift-masters { max-width: none; }
+@media (min-width: 861px) {
+  .gift-card { grid-template-columns: 1fr; align-items: start; padding: 16px; }
+  .gift-card img { width: 100%; aspect-ratio: 3 / 2; }
+  .gift-card-body { padding: 4px 4px 4px; }
+  .gift-steps { grid-template-rows: auto auto auto; }
+  .gift-steps li { grid-row: span 3; grid-template-rows: subgrid; row-gap: 8px; }   /* заголовки и тексты шагов на одной высоте */
+  .gift-steps li::before { margin-bottom: 0; }
+}
+.gift .gift-how { max-width: none; }
