@@ -286,6 +286,7 @@ section { padding-block: clamp(64px, 8vw, 112px); scroll-margin-top: 64px; }
 .faq summary:hover .ic { color: var(--skin); }
 .faq .ans { color: var(--ash); padding-bottom: 22px; max-width: 40em; }
 .faq .ans b { color: var(--skin); font-weight: 600; }
+.faq .ans a { color: var(--skin); text-underline-offset: 3px; }
 
 /* Как записаться: шаги — на телефоне цифра слева от текста, с 521px две колонки, с 901px четыре */
 .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--graphite); }
@@ -310,6 +311,14 @@ section { padding-block: clamp(64px, 8vw, 112px); scroll-margin-top: 64px; }
   .steps > li { padding-bottom: 0; }
   .steps > li:nth-child(3) { padding-left: 28px; border-left: 1px solid var(--graphite); }
 }
+
+/* Ссылка на памятку в шаге «Заживление» */
+.doc-link { display: inline-flex; align-items: center; gap: 8px; min-height: var(--tap); margin-top: 4px; color: var(--skin); font-size: 15px; text-decoration: none; }
+.doc-link span { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--edge); }
+.doc-link .ic { font-size: 18px; color: var(--wine-hi); flex: none; }
+.doc-link:hover span { text-decoration-color: var(--skin); }
+.steps > li > .doc-link { grid-column: 2; }
+@media (min-width: 521px) { .steps > li > .doc-link { grid-column: auto; } }
 
 /* Шаг «Запись»: мастеру напрямую, ниже — контакты студии простым списком, в одном ритме с текстом соседних шагов */
 .steps .step-body { display: grid; gap: 10px; align-content: start; }
@@ -349,6 +358,8 @@ footer .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20p
 footer img { width: 24px; filter: invert(1); opacity: .6; }
 footer .site { margin-left: auto; }
 footer .legal { flex-basis: 100%; font-size: 12px; }
+footer .legal-link { color: var(--ash); text-decoration: underline; text-underline-offset: 2px; }
+footer .legal-link:hover { color: var(--skin); }
 
 /* Просмотр работы: на телефоне стрелки внизу, с 601px по бокам */
 dialog.lb {
